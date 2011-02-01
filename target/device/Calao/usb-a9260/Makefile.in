@@ -1,0 +1,4 @@
+BOARD_PATH=target/device/Calao/usb-a9260
+
+TARGET_SKELETON=$(BOARD_PATH)/target_skeleton
+

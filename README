@@ -1,0 +1,19 @@
+Date: 01/02/2011
+Author: gregory Hermant
+First release
+
+Note: The calao-buildroot has been tested with crosstool-NG-1.9.0
+This toolchain has been built from the config file located in the below directory:
+/lib/ct-ng-1.9.0/samples/arm-unknown-linux-uclibcgnueabi/crosstool.config
+You will find more information at: http://ymorin.is-a-geek.org/projects/crosstool
+ 
+You should also be able to build the binaries from the Lite version of the
+CodeSourcery Toolchain by adjusting several options.
+(see http://www.codesourcery.com/sgpp/lite/arm/download.html)
+
+How to build the binaries for your calao embedded board
+1- Choose the config file corresponding to your board (see in configs/ folder)
+2- Issue "make calaoboard_defconfig"
+3- Issue "make menuconfig" in order to adjust the path of your external toolchain.
+4- Issue "make 2>&1 | tee build.log" 
+5- Flash your binaries with the SAM-BA atmel utility

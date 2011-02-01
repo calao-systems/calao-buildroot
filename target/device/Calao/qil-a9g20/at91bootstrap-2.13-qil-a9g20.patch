@@ -1,0 +1,620 @@
+diff --git a/board/Config.in b/board/Config.in
+index 3e8f1aa..6ba144c 100644
+--- a/board/Config.in
++++ b/board/Config.in
+@@ -110,6 +110,16 @@ config	CONFIG_AT91SAM9G20EK
+ 	help
+ 	  Use the AT91SAM9G20EK Development board
+ 
++config	CONFIG_QIL_A9G20
++	bool "qil-a9g20"
++	select CONFIG_SDRAM
++	select ALLOW_NANDFLASH
++	select ALLOW_CPU_CLK_400MHZ
++	select ALLOW_CRYSTAL_12_000MHZ
++	select ALLOW_NANDFLASH_RECOVERY
++	help
++	  Use the QIL-A9G20 Embedded Computer
++
+ config	CONFIG_AT91SAM9G45EK
+ 	bool "at91sam9g45ek"
+ 	select CONFIG_DDR2
+@@ -203,6 +213,7 @@ config CONFIG_CHIP
+ 	default "AT91SAM9XE"	if CONFIG_AT91SAM9XEEK
+ 	default "AT91SAM9G10"	if CONFIG_AT91SAM9G10EK
+ 	default "AT91SAM9G20"	if CONFIG_AT91SAM9G20EK
++	default "AT91SAM9G20"	if CONFIG_QIL_A9G20
+ 	default "AT91SAM9G45"	if CONFIG_AT91SAM9G45EK
+ 	default "AT91SAM9G45"	if CONFIG_AT91SAM9G45EKES
+ 	default "AT91SAM9M10"	if CONFIG_AT91SAM9M10EK
+@@ -222,6 +233,7 @@ config CONFIG_BOARD
+ 	default "at91sam9xeek"	if CONFIG_AT91SAM9XEEK
+ 	default "at91sam9g10ek"	if CONFIG_AT91SAM9G10EK
+ 	default "at91sam9g20ek"	if CONFIG_AT91SAM9G20EK
++	default "qil-a9g20"	if CONFIG_QIL_A9G20	
+ 	default "at91sam9g45ek"	if CONFIG_AT91SAM9G45EK
+ 	default "at91sam9g45ekes" if CONFIG_AT91SAM9G45EKES
+ 	default "at91sam9m10ek"	if CONFIG_AT91SAM9M10EK
+@@ -241,6 +253,7 @@ config CONFIG_MACH_TYPE
+ 	default "0x44B"	if CONFIG_AT91SAM9XEEK
+ 	default "0x86F"	if CONFIG_AT91SAM9G10EK		
+ 	default "0x658"	if CONFIG_AT91SAM9G20EK
++	default "0x734"	if CONFIG_QIL_A9G20
+ 	default "1830"	if CONFIG_AT91SAM9G45EK		# 1830	
+ 	default "2212"	if CONFIG_AT91SAM9G45EKES	# 2212
+ 	default "1830"	if CONFIG_AT91SAM9M10EK		# 1830
+@@ -275,6 +288,7 @@ config CONFIG_TOP_OF_MEMORY
+ 	default "0x301000"	if CONFIG_AT91SAM9XEEK
+ 	default "0x301000"	if CONFIG_AT91SAM9G10EK
+ 	default "0x301000"	if CONFIG_AT91SAM9G20EK
++	default "0x301000"	if CONFIG_QIL_A9G20
+ 	default "0x304000"	if CONFIG_AT91SAM9G45EK
+ 	default "0x304000"	if CONFIG_AT91SAM9G45EKES
+ 	default "0x301000"	if CONFIG_AT91SAM9M10EK
+@@ -332,6 +346,7 @@ config CONFIG_CRYSTAL
+ 
+ config CONFIG_CRYSTAL
+ 	string
++	default "CRYSTAL_12_000MHZ"	if CONFIG_CRYSTAL_12_000MHZ
+ 	default "CRYSTAL_16_000MHZ"	if CONFIG_CRYSTAL_16_000MHZ
+ 	default "CRYSTAL_16_36766MHZ"	if CONFIG_CRYSTAL_16_36766MHZ
+ 	default "CRYSTAL_18_432MHZ"	if CONFIG_CRYSTAL_18_432MHZ
+diff --git a/board/boards b/board/boards
+index 9da6dd4..389c104 100644
+--- a/board/boards
++++ b/board/boards
+@@ -23,6 +23,7 @@ at91sam9g20ek/at91sam9g20dfc_defconfig
+ at91sam9g20ek/at91sam9g20df_defconfig
+ at91sam9g20ek/at91sam9g20ek_defconfig
+ at91sam9g20ek/at91sam9g20nf_defconfig
++qil-a9g20/qil-a9g20_defconfig
+ at91sam9g45ek/at91sam9g45df_defconfig
+ at91sam9g45ek/at91sam9g45ek_defconfig
+ at91sam9g45ek/at91sam9g45nf_defconfig
+diff --git a/board/qil-a9g20/board.mk b/board/qil-a9g20/board.mk
+new file mode 100644
+index 0000000..5e7c8e1
+--- /dev/null
++++ b/board/qil-a9g20/board.mk
+@@ -0,0 +1,5 @@
++CPPFLAGS += \
++	-DCONFIG_QIL_A9G20
++
++ASFLAGS += \
++	-DCONFIG_QIL_A9G20
+diff --git a/board/qil-a9g20/qil-a9g20.c b/board/qil-a9g20/qil-a9g20.c
+new file mode 100644
+index 0000000..e6943f2
+--- /dev/null
++++ b/board/qil-a9g20/qil-a9g20.c
+@@ -0,0 +1,305 @@
++/* ----------------------------------------------------------------------------
++ *         ATMEL Microcontroller Software Support  -  ROUSSET  -
++ * ----------------------------------------------------------------------------
++ * Copyright (c) 2006, Atmel Corporation
++
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *
++ * - Redistributions of source code must retain the above copyright notice,
++ * this list of conditions and the disclaiimer below.
++ *
++ * Atmel's name may not be used to endorse or promote products derived from
++ * this software without specific prior written permission.
++ *
++ * DISCLAIMER: THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR
++ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
++ * DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR ANY DIRECT, INDIRECT,
++ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
++ * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
++ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
++ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
++ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ * ----------------------------------------------------------------------------
++ * File Name           : qil-a9g20.c
++ * Object              :
++ * Creation            : GH Dec 2nd 2010
++ * ODi Nov 9th         : dstp #3507 "Bad PIO descriptors in at91samxxxek.c"
++ *-----------------------------------------------------------------------------
++ */
++#include "part.h"
++#include "main.h"
++#include "gpio.h"
++#include "pmc.h"
++#include "rstc.h"
++#include "debug.h"
++#include "memory.h"
++
++#ifndef CONFIG_THUMB
++static inline unsigned int get_cp15(void)
++{
++	unsigned int value;
++	__asm__("mrc p15, 0, %0, c1, c0, 0" : "=r" (value));
++	return value;
++}
++
++static inline void set_cp15(unsigned int value)
++{
++	__asm__("mcr p15, 0, %0, c1, c0, 0" : : "r" (value));
++}
++#else
++int get_cp15(void);
++void set_cp15(unsigned int value);
++#endif
++
++#ifdef CONFIG_HW_INIT
++/*----------------------------------------------------------------------------*/
++/* \fn    hw_init							      */
++/* \brief This function performs very low level HW initialization	      */
++/* This function is invoked as soon as possible during the c_startup	      */
++/* The bss segment must be initialized					      */
++/*----------------------------------------------------------------------------*/
++void hw_init(void)
++{
++	unsigned int cp15;
++	
++	/* Configure PIOs */
++	const struct pio_desc hw_pio[] = {
++#ifdef CONFIG_VERBOSE
++		{"RXD", AT91C_PIN_PB(14), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"TXD", AT91C_PIN_PB(15), 0, PIO_DEFAULT, PIO_PERIPH_A},
++#endif
++		{(char *) 0, 0, 0, PIO_DEFAULT, PIO_PERIPH_A},
++	};
++
++	/* Disable watchdog */
++	writel(AT91C_WDTC_WDDIS, AT91C_BASE_WDTC + WDTC_WDMR);
++
++	/* At this stage the main oscillator is supposed to be enabled
++	 * PCK = MCK = MOSC */
++
++	/* Configure PLLA = MOSC * (PLL_MULA + 1) / PLL_DIVA */
++	pmc_cfg_plla(PLLA_SETTINGS, PLL_LOCK_TIMEOUT);
++
++	/* PCK = PLLA = 2 * MCK */
++	pmc_cfg_mck(MCKR_SETTINGS, PLL_LOCK_TIMEOUT);
++	/* Switch MCK on PLLA output */
++	pmc_cfg_mck(MCKR_CSS_SETTINGS, PLL_LOCK_TIMEOUT);
++
++	/* Configure PLLB */
++	pmc_cfg_pllb(PLLB_SETTINGS, PLL_LOCK_TIMEOUT);
++
++	/* Enable External Reset */
++	writel(AT91C_RSTC_KEY_UNLOCK || AT91C_RSTC_URSTEN, AT91C_BASE_RSTC + RSTC_RMR);
++
++	/* Configure CP15 */
++	cp15 = get_cp15();
++	cp15 |= I_CACHE;
++	set_cp15(cp15);
++
++	/* Configure the PIO controller */
++	pio_setup(hw_pio);
++
++	/* Configure the EBI Slave Slot Cycle to 64 */
++	writel( (readl((AT91C_BASE_MATRIX + MATRIX_SCFG3)) & ~0xFF) | 0x40, (AT91C_BASE_MATRIX + MATRIX_SCFG3));
++
++#ifdef CONFIG_VERBOSE
++	/* Enable Debug messages on the DBGU */
++	dbg_init(BAUDRATE(MASTER_CLOCK, 115200));
++	header();
++#endif /* CONFIG_VERBOSE */
++
++#ifdef CONFIG_SDRAM
++	/* Initialize the matrix */
++	writel(readl(AT91C_BASE_CCFG + CCFG_EBICSA) | AT91C_EBI_CS1A_SDRAMC, AT91C_BASE_CCFG + CCFG_EBICSA);
++
++	/* Configure SDRAM Controller */
++	sdram_init(	AT91C_SDRAMC_NC_9  |
++				AT91C_SDRAMC_NR_13 |
++				AT91C_SDRAMC_CAS_3 |
++				AT91C_SDRAMC_NB_4_BANKS |
++				AT91C_SDRAMC_DBW_32_BITS |
++				AT91C_SDRAMC_TWR_3 |
++				AT91C_SDRAMC_TRC_9 |
++				AT91C_SDRAMC_TRP_3 |
++				AT91C_SDRAMC_TRCD_3 |
++				AT91C_SDRAMC_TRAS_6 |
++				AT91C_SDRAMC_TXSR_10,		/* Control Register */
++				(MASTER_CLOCK * 7)/1000000,	/* Refresh Timer Register */
++				AT91C_SDRAMC_MD_SDRAM);		/* SDRAM (no low power)   */ 
++
++
++#endif /* CONFIG_SDRAM */
++}
++#endif /* CONFIG_HW_INIT */
++
++#ifdef CONFIG_SDRAM
++/*------------------------------------------------------------------------------*/
++/* \fn    sdramc_hw_init							*/
++/* \brief This function performs SDRAMC HW initialization			*/
++/*------------------------------------------------------------------------------*/
++void sdramc_hw_init(void)
++{
++	/* Configure PIOs */
++/*	const struct pio_desc sdramc_pio[] = {
++		{"D16", AT91C_PIN_PC(16), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D17", AT91C_PIN_PC(17), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D18", AT91C_PIN_PC(18), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D19", AT91C_PIN_PC(19), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D20", AT91C_PIN_PC(20), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D21", AT91C_PIN_PC(21), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D22", AT91C_PIN_PC(22), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D23", AT91C_PIN_PC(23), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D24", AT91C_PIN_PC(24), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D25", AT91C_PIN_PC(25), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D26", AT91C_PIN_PC(26), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D27", AT91C_PIN_PC(27), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D28", AT91C_PIN_PC(28), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D29", AT91C_PIN_PC(29), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D30", AT91C_PIN_PC(30), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"D31", AT91C_PIN_PC(31), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{(char *) 0, 0, 0, PIO_DEFAULT, PIO_PERIPH_A},
++	};
++*/
++	/* Configure the SDRAMC PIO controller to output PCK0 */
++/*	pio_setup(sdramc_pio); */
++
++	writel(0xFFFF0000, AT91C_BASE_PIOC + PIO_ASR(0));
++	writel(0xFFFF0000, AT91C_BASE_PIOC + PIO_PDR(0));
++
++}
++#endif /* CONFIG_SDRAM */
++
++#ifdef CONFIG_DATAFLASH
++#if	defined(CONFIG_DATAFLASH_RECOVERY)
++/*------------------------------------------------------------------------------*/
++/* \fn    df_recovery								*/
++/* \brief This function erases DataFlash Page 0 if BP4 is pressed 		*/
++/*        during boot sequence							*/
++/*------------------------------------------------------------------------------*/
++void df_recovery(AT91PS_DF pDf)
++{
++#if (AT91C_SPI_PCS_DATAFLASH == AT91C_SPI_PCS1_DATAFLASH)
++	/* Configure PIOs */
++	const struct pio_desc bp4_pio[] = {
++		{"BP4", AT91C_PIN_PA(31), 0, PIO_PULLUP, PIO_INPUT},
++		{(char *) 0, 0, 0, PIO_DEFAULT, PIO_PERIPH_A},
++	};
++
++	/* Configure the PIO controller */
++	writel((1 << AT91C_ID_PIOA), PMC_PCER + AT91C_BASE_PMC);
++	pio_setup(bp4_pio);
++	
++	/* If BP4 is pressed during Boot sequence */
++	/* Erase NandFlash block 0*/
++	if ( !pio_get_value(AT91C_PIN_PA(31)) )
++		df_page_erase(pDf, 0);
++#endif
++}
++#endif
++/*------------------------------------------------------------------------------*/
++/* \fn    df_hw_init								*/
++/* \brief This function performs DataFlash HW initialization			*/
++/*------------------------------------------------------------------------------*/
++void df_hw_init(void)
++{
++	/* Configure PIOs */
++	const struct pio_desc df_pio[] = {
++		{"MISO",  AT91C_PIN_PA(0), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"MOSI",  AT91C_PIN_PA(1), 0, PIO_DEFAULT, PIO_PERIPH_A},
++		{"SPCK",  AT91C_PIN_PA(2), 0, PIO_DEFAULT, PIO_PERIPH_A},
++#if (AT91C_SPI_PCS_DATAFLASH == AT91C_SPI_PCS0_DATAFLASH)
++		{"NPCS0", AT91C_PIN_PA(3), 0, PIO_DEFAULT, PIO_PERIPH_A},
++#endif
++#if (AT91C_SPI_PCS_DATAFLASH == AT91C_SPI_PCS1_DATAFLASH)
++		{"NPCS1", AT91C_PIN_PC(11), 0, PIO_DEFAULT, PIO_PERIPH_B},
++#endif
++		{(char *) 0, 0, 0, PIO_DEFAULT, PIO_PERIPH_A},
++	};
++
++	/* Configure the PIO controller */
++	pio_setup(df_pio);
++}
++#endif /* CONFIG_DATAFLASH */
++
++
++
++#ifdef CONFIG_NANDFLASH
++/*------------------------------------------------------------------------------*/
++/* \fn    nand_recovery						*/
++/* \brief This function erases NandFlash Block 0 if BP4 is pressed 		*/
++/*        during boot sequence							*/
++/*------------------------------------------------------------------------------*/
++static void nand_recovery(void)
++{
++	/* Configure PIOs */
++	const struct pio_desc bp4_pio[] = {
++		{"BP", AT91C_PIN_PB(10), 0, PIO_PULLUP, PIO_INPUT},
++		{(char *) 0, 0, 0, PIO_DEFAULT, PIO_PERIPH_A},
++	};
++
++	/* Configure the PIO controller */
++	writel((1 << AT91C_ID_PIOB), PMC_PCER + AT91C_BASE_PMC);
++	pio_setup(bp4_pio);
++	
++	/* If BP is pressed during Boot sequence */
++	/* Erase NandFlash block 0*/
++	if (!pio_get_value(AT91C_PIN_PB(10)) )
++		AT91F_NandEraseBlock0();
++}
++
++/*------------------------------------------------------------------------------*/
++/* \fn    nandflash_hw_init							*/
++/* \brief NandFlash HW init							*/
++/*------------------------------------------------------------------------------*/
++void nandflash_hw_init(void)
++{
++	/* Configure PIOs */
++	const struct pio_desc nand_pio[] = {
++		{"RDY_BSY", AT91C_PIN_PC(13), 0, PIO_PULLUP, PIO_INPUT},
++		{"NANDCS",  AT91C_PIN_PC(14), 0, PIO_PULLUP, PIO_OUTPUT},
++		{(char *) 0, 0, 0,  PIO_DEFAULT, PIO_PERIPH_A},
++	};
++
++	/* Setup Smart Media, first enable the address range of CS3 in HMATRIX user interface */
++	writel(readl(AT91C_BASE_CCFG + CCFG_EBICSA) | AT91C_EBI_CS3A_SM, AT91C_BASE_CCFG + CCFG_EBICSA);
++   
++	/* Configure SMC CS3 */
++ 	writel((AT91C_SM_NWE_SETUP | AT91C_SM_NCS_WR_SETUP | AT91C_SM_NRD_SETUP | AT91C_SM_NCS_RD_SETUP), AT91C_BASE_SMC + SMC_SETUP3);
++  	writel((AT91C_SM_NWE_PULSE | AT91C_SM_NCS_WR_PULSE | AT91C_SM_NRD_PULSE | AT91C_SM_NCS_RD_PULSE), AT91C_BASE_SMC + SMC_PULSE3);
++	writel((AT91C_SM_NWE_CYCLE | AT91C_SM_NRD_CYCLE)						, AT91C_BASE_SMC + SMC_CYCLE3);
++	writel((AT91C_SMC_READMODE | AT91C_SMC_WRITEMODE | AT91C_SMC_NWAITM_NWAIT_DISABLE | 
++  		AT91C_SMC_DBW_WIDTH_SIXTEEN_BITS | AT91C_SM_TDF)						, AT91C_BASE_SMC + SMC_CTRL3);
++
++	/* Configure the PIO controller */
++	writel((1 << AT91C_ID_PIOC), PMC_PCER + AT91C_BASE_PMC);
++	pio_setup(nand_pio);
++	
++	nand_recovery();
++}
++#if	0
++/*------------------------------------------------------------------------------*/
++/* \fn    nandflash_cfg_16bits_dbw_init						*/
++/* \brief Configure SMC in 16 bits mode						*/
++/*------------------------------------------------------------------------------*/
++void nandflash_cfg_16bits_dbw_init(void)
++{
++	writel(readl(AT91C_BASE_SMC + SMC_CTRL3) | AT91C_SMC_DBW_WIDTH_SIXTEEN_BITS, AT91C_BASE_SMC + SMC_CTRL3);
++}
++#endif
++
++/*------------------------------------------------------------------------------*/
++/* \fn    nandflash_cfg_8bits_dbw_init						*/
++/* \brief Configure SMC in 8 bits mode						*/
++/*------------------------------------------------------------------------------*/
++void nandflash_cfg_8bits_dbw_init(void)
++{
++	writel((readl(AT91C_BASE_SMC + SMC_CTRL3) & ~(AT91C_SMC_DBW)) | AT91C_SMC_DBW_WIDTH_EIGTH_BITS, AT91C_BASE_SMC + SMC_CTRL3);
++}
++
++
++#endif /* #ifdef CONFIG_NANDFLASH */
+diff --git a/board/qil-a9g20/qil-a9g20.h b/board/qil-a9g20/qil-a9g20.h
+new file mode 100644
+index 0000000..7c4450c
+--- /dev/null
++++ b/board/qil-a9g20/qil-a9g20.h
+@@ -0,0 +1,107 @@
++/* ----------------------------------------------------------------------------
++ *         ATMEL Microcontroller Software Support  -  ROUSSET  -
++ * ----------------------------------------------------------------------------
++ * Copyright (c) 2006, Atmel Corporation
++
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *
++ * - Redistributions of source code must retain the above copyright notice,
++ * this list of conditions and the disclaiimer below.
++ *
++ * Atmel's name may not be used to endorse or promote products derived from
++ * this software without specific prior written permission.
++ *
++ * DISCLAIMER: THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR
++ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
++ * DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR ANY DIRECT, INDIRECT,
++ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
++ * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
++ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
++ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
++ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ * ----------------------------------------------------------------------------
++ * File Name           : qil-a9g20.h
++ * Object              :
++ * Creation            : GH Dec 2nd 2010
++ *-----------------------------------------------------------------------------
++ */
++#ifndef _QIL_A9G20_H
++#define _QIL_A9G20_H
++
++/* ******************************************************************* */
++/* PMC Settings                                                        */
++/*                                                                     */
++/* The main oscillator is enabled as soon as possible in the c_startup */
++/* and MCK is switched on the main oscillator.                         */
++/* PLL initialization is done later in the hw_init() function          */
++/* ******************************************************************* */
++#define MASTER_CLOCK		(133000000)
++#define	TOP_OF_MEMORY		0x301000
++#define PLL_LOCK_TIMEOUT	1000000
++
++// LPSDRAM (fmax=133Mhz)
++// set PLLA to 798Mhz from MAINCK=12Mhz MULA=132 (0x84), DIVA=0x02 (Fplla = 12Mhz * [(132+1)/2]=798Mhz)
++#define PLLA_SETTINGS	0x20843F02
++#define PLLB_SETTINGS	0x100F3F02
++
++/* Switch MCK on PLLA output PCK = PLLA/2 = 3 * MCK */
++// LPSDRAM (fmax=133Mhz) PDIV=1 => PCLK= PRESCALER CLK/2=399Mhz
++// MDIV = 3 => PRESCALER CLK / 6 = MCLK=133Mhz
++// PRESCALER CLK = PLLA CLK = 798Mhz
++#define MCKR_SETTINGS		0x1300
++#define MCKR_CSS_SETTINGS	(AT91C_PMC_CSS_PLLA_CLK | MCKR_SETTINGS)
++
++/* ******************************************************************* */
++/* DataFlash Settings                                                  */
++/*                                                                     */
++/* ******************************************************************* */
++#define AT91C_BASE_SPI	AT91C_BASE_SPI0
++#define AT91C_ID_SPI	AT91C_ID_SPI0
++
++/* AC characteristics */
++/* DLYBS = tCSS= 250ns min and DLYBCT = tCSH = 250ns */
++#define DATAFLASH_TCSS		(0x1a << 16)	/* 250ns min (tCSS) <=> 12/48000000 = 250ns */
++#define DATAFLASH_TCHS		(0x1 << 24)	/* 250ns min (tCSH) <=> (64*1+SCBR)/(2*48000000) */
++
++#define DF_CS_SETTINGS 		(AT91C_SPI_NCPHA | (AT91C_SPI_DLYBS & DATAFLASH_TCSS) | (AT91C_SPI_DLYBCT & DATAFLASH_TCHS) | ((MASTER_CLOCK / AT91C_SPI_CLK) << 8))
++
++/* ******************************************************************* */
++/* NandFlash Settings                                                  */
++/*                                                                     */
++/* ******************************************************************* */
++#define AT91C_SMARTMEDIA_BASE	0x40000000
++
++#define AT91_SMART_MEDIA_ALE    (1 << 21)	/* our ALE is AD21 */
++#define AT91_SMART_MEDIA_CLE    (1 << 22)	/* our CLE is AD22 */
++
++#define NAND_DISABLE_CE() do { *(volatile unsigned int *)AT91C_PIOC_SODR = AT91C_PIO_PC14;} while(0)
++#define NAND_ENABLE_CE() do { *(volatile unsigned int *)AT91C_PIOC_CODR = AT91C_PIO_PC14;} while(0)
++
++#define NAND_WAIT_READY() while (!(*(volatile unsigned int *)AT91C_PIOC_PDSR & AT91C_PIO_PC13))
++
++
++/* ******************************************************************** */
++/* SMC Chip Select 3 Timings for NandFlash for MASTER_CLOCK = 100000000.*/
++/* Please refer to SMC section in AT91SAM datasheet to learn how 	*/
++/* to generate these values. 						*/
++/* ******************************************************************** */
++#define AT91C_SM_NWE_SETUP	(2 << 0)
++#define AT91C_SM_NCS_WR_SETUP	(0 << 8)
++#define AT91C_SM_NRD_SETUP	(2 << 16)
++#define AT91C_SM_NCS_RD_SETUP	(0 << 24)
++  
++#define AT91C_SM_NWE_PULSE 	(4 << 0)
++#define AT91C_SM_NCS_WR_PULSE	(4 << 8)
++#define AT91C_SM_NRD_PULSE	(4 << 16)
++#define AT91C_SM_NCS_RD_PULSE	(4 << 24)
++  
++#define AT91C_SM_NWE_CYCLE 	(7 << 0)
++#define AT91C_SM_NRD_CYCLE	(7 << 16)
++#define AT91C_SM_TDF	        (3 << 16)
++
++#endif	/* _QIL_A9G20_H */
+diff --git a/board/qil-a9g20/qil-a9g20_defconfig b/board/qil-a9g20/qil-a9g20_defconfig
+new file mode 100644
+index 0000000..9999188
+--- /dev/null
++++ b/board/qil-a9g20/qil-a9g20_defconfig
+@@ -0,0 +1,88 @@
++#
++# Automatically generated make config: don't edit
++# Tue Dec  7 12:29:20 2010
++#
++HAVE_DOT_CONFIG=y
++CONFIG_BOARDNAME="qil-a9g20"
++# CONFIG_AT91SAM9260EK is not set
++# CONFIG_AT91SAM9261EK is not set
++# CONFIG_AT91SAM9263EK is not set
++# CONFIG_AT91SAM9RLEK is not set
++# CONFIG_AT91SAM9XEEK is not set
++# CONFIG_AT91SAM9G10EK is not set
++# CONFIG_AT91SAM9G20EK is not set
++CONFIG_QIL_A9G20=y
++# CONFIG_AT91SAM9G45EK is not set
++# CONFIG_AT91SAM9G45EKES is not set
++# CONFIG_AT91SAM9M10EK is not set
++# CONFIG_AT91CAP9ADK is not set
++# CONFIG_AT91CAP9STK is not set
++# CONFIG_AFEB9260 is not set
++CONFIG_CHIP="AT91SAM9G20"
++CONFIG_BOARD="qil-a9g20"
++CONFIG_MACH_TYPE="0x734"
++CONFIG_LINK_ADDR="0x000000"
++CONFIG_TOP_OF_MEMORY="0x301000"
++CONFIG_BOOTSTRAP_MAXSIZE="13000"
++CONFIG_CRYSTAL_12_000MHZ=y
++# CONFIG_CRYSTAL_16_000MHZ is not set
++# CONFIG_CRYSTAL_16_36766MHZ is not set
++# CONFIG_CRYSTAL_18_432MHZ is not set
++ALLOW_CRYSTAL_12_000MHZ=y
++CONFIG_CRYSTAL="CRYSTAL_12_000MHZ"
++# CONFIG_CPU_CLK_166MHZ is not set
++# CONFIG_CPU_CLK_180MHZ is not set
++# CONFIG_CPU_CLK_200MHZ is not set
++# CONFIG_CPU_CLK_240MHZ is not set
++# CONFIG_CPU_CLK_266MHZ is not set
++CONFIG_CPU_CLK_400MHZ=y
++ALLOW_CPU_CLK_400MHZ=y
++# DISABLE_CPU_CLK_240MHZ is not set
++# CONFIG_BUS_SPEED_83MHZ is not set
++# CONFIG_BUS_SPEED_90MHZ is not set
++# CONFIG_BUS_SPEED_100MHZ is not set
++CONFIG_BUS_SPEED_133MHZ=y
++
++#
++# Memory selection
++#
++CONFIG_SDRAM=y
++# CONFIG_SDDRC is not set
++# CONFIG_DDR2 is not set
++# ALLOW_DATAFLASH is not set
++# ALLOW_FLASH is not set
++ALLOW_NANDFLASH=y
++# ALLOW_SDCARD is not set
++# ALLOW_PSRAM is not set
++# ALLOW_SDRAM_16BIT is not set
++# CONFIG_RAM_32MB is not set
++CONFIG_RAM_64MB=y
++# CONFIG_RAM_128MB is not set
++# CONFIG_RAM_256MB is not set
++# CONFIG_DATAFLASH is not set
++# CONFIG_FLASH is not set
++CONFIG_NANDFLASH=y
++# CONFIG_SDCARD is not set
++CONFIG_MEMORY="nandflash"
++
++#
++# NAND Flash configuration
++#
++# CONFIG_NANDFLASH_SMALL_BLOCKS is not set
++CONFIG_PROJECT="nandflash"
++CONFIG_LOAD_UBOOT=y
++# CONFIG_LOAD_64KB is not set
++# CONFIG_LOAD_1MB is not set
++# CONFIG_LOAD_4MB is not set
++CONFIG_IMG_ADDRESS="0x00020000"
++CONFIG_IMG_SIZE="0x00040000"
++CONFIG_JUMP_ADDR="0x23F00000"
++CONFIG_APP_CHECK=y
++# CONFIG_LONG_TEST is not set
++# CONFIG_DEBUG is not set
++# CONFIG_VERBOSE is not set
++CONFIG_HW_INIT=y
++# CONFIG_USER_HW_INIT is not set
++# CONFIG_THUMB is not set
++CONFIG_SX_AT91=y
++CONFIG_RAW_AT91=y
+diff --git a/include/part.h b/include/part.h
+index 3aedd6a..3dca4b0 100644
+--- a/include/part.h
++++ b/include/part.h
+@@ -60,8 +60,13 @@
+ 
+ #ifdef AT91SAM9G20
+ #include "AT91SAM9260_inc.h"
++#ifdef CONFIG_AT91SAM9G20EK
+ #include "at91sam9g20ek.h"
+ #endif
++#ifdef CONFIG_QIL_A9G20
++#include "qil-a9g20.h"
++#endif
++#endif
+ 
+ #ifdef AT91SAM9G45
+ #include "AT91SAM9G45_inc.h"

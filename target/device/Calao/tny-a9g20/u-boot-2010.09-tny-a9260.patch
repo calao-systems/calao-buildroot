@@ -1,0 +1,177 @@
+diff --git a/board/calao/tny_a9260/tny_a9260.c b/board/calao/tny_a9260/tny_a9260.c
+index d51ca15..14829a5 100644
+--- a/board/calao/tny_a9260/tny_a9260.c
++++ b/board/calao/tny_a9260/tny_a9260.c
+@@ -53,6 +53,7 @@ static void tny_a9260_nand_hw_init(void)
+ 		       csa | AT91_MATRIX_CS3A_SMC_SMARTMEDIA);
+ 
+ 	/* Configure SMC CS3 for NAND/SmartMedia */
++#if defined(CONFIG_TNY_A9260)
+ 	at91_sys_write(AT91_SMC_SETUP(3),
+ 		       AT91_SMC_NWESETUP_(1) | AT91_SMC_NCS_WRSETUP_(0) |
+ 		       AT91_SMC_NRDSETUP_(1) | AT91_SMC_NCS_RDSETUP_(0));
+@@ -64,12 +65,23 @@ static void tny_a9260_nand_hw_init(void)
+ 	at91_sys_write(AT91_SMC_MODE(3),
+ 		       AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
+ 		       AT91_SMC_EXNWMODE_DISABLE |
+-#ifdef CONFIG_SYS_NAND_DBW_16
+-		       AT91_SMC_DBW_16 |
+-#else /* CONFIG_SYS_NAND_DBW_8 */
+ 		       AT91_SMC_DBW_8 |
+-#endif
+ 		       AT91_SMC_TDF_(2));
++#elif defined(CONFIG_TNY_A9G20)
++	at91_sys_write(AT91_SMC_SETUP(3),
++		       AT91_SMC_NWESETUP_(2) | AT91_SMC_NCS_WRSETUP_(0) |
++		       AT91_SMC_NRDSETUP_(2) | AT91_SMC_NCS_RDSETUP_(0));
++	at91_sys_write(AT91_SMC_PULSE(3),
++		       AT91_SMC_NWEPULSE_(4) | AT91_SMC_NCS_WRPULSE_(4) |
++		       AT91_SMC_NRDPULSE_(4) | AT91_SMC_NCS_RDPULSE_(4));
++	at91_sys_write(AT91_SMC_CYCLE(3),
++		       AT91_SMC_NWECYCLE_(7) | AT91_SMC_NRDCYCLE_(7));
++	at91_sys_write(AT91_SMC_MODE(3),
++		       AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
++		       AT91_SMC_EXNWMODE_DISABLE |
++		       AT91_SMC_DBW_8 |
++		       AT91_SMC_TDF_(3));
++#endif
+ 
+ 	at91_sys_write(AT91_PMC_PCER, 1 << AT91SAM9260_ID_PIOC);
+ 
+@@ -80,6 +92,47 @@ static void tny_a9260_nand_hw_init(void)
+ 	at91_set_gpio_output(CONFIG_SYS_NAND_ENABLE_PIN, 1);
+ }
+ 
++#ifdef CONFIG_MACB
++static void tny_a9260_macb_hw_init(void)
++{
++	unsigned long rstc;
++
++	/* Enable clock */
++	at91_sys_write(AT91_PMC_PCER, 1 << AT91SAM9260_ID_EMAC);
++
++	/*
++	 * Disable pull-up on:
++	 *	RXER (PA18) => PHYAD0 (LAN8720: MOB-TNY-A9xxx-MD2)
++	 *
++	 * PHY has internal pull-down
++	 */
++	writel(pin_to_mask(AT91_PIN_PA18),
++	       pin_to_controller(AT91_PIN_PA0) + PIO_PUDR);
++
++	rstc = at91_sys_read(AT91_RSTC_MR) & AT91_RSTC_ERSTL;
++
++	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY & 0xFF000000);
++
++	/* Need to reset PHY -> 500ms reset */
++	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
++				     (AT91_RSTC_ERSTL & (0x0D << 8)) );
++
++	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
++
++	/* Wait for end hardware reset */
++	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL));
++
++	/* Restore NRST value */
++	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY | (rstc) );
++
++	/* Re-enable pull-up */
++	writel(pin_to_mask(AT91_PIN_PA18),
++	       pin_to_controller(AT91_PIN_PA0) + PIO_PUER);
++
++	at91_macb_hw_init();
++}
++#endif
++
+ int board_init(void)
+ {
+ 	/* Enable Ctrlc */
+@@ -96,6 +149,9 @@ int board_init(void)
+ 	at91_serial_hw_init();
+ 	tny_a9260_nand_hw_init();
+ 	at91_spi0_hw_init(1 << 5);
++#ifdef CONFIG_MACB
++	tny_a9260_macb_hw_init();
++#endif
+ 	return 0;
+ }
+ 
+@@ -108,3 +164,18 @@ int dram_init(void)
+ 	gd->bd->bi_dram[0].size = PHYS_SDRAM_SIZE;
+ 	return 0;
+ }
++
++#ifdef CONFIG_RESET_PHY_R
++void reset_phy(void)
++{
++}
++#endif
++
++int board_eth_init(bd_t *bis)
++{
++	int rc = 0;
++#ifdef CONFIG_MACB
++	rc = macb_eth_initialize(0, (void *)AT91SAM9260_BASE_EMAC, 0x00);
++#endif
++	return rc;
++}
+diff --git a/include/configs/tny_a9260.h b/include/configs/tny_a9260.h
+index 5af2af3..0ace8f8 100644
+--- a/include/configs/tny_a9260.h
++++ b/include/configs/tny_a9260.h
+@@ -78,17 +78,25 @@
+ #define CONFIG_BOOTDELAY	3
+ 
+ /*
++ * BOOTP options
++ */
++#define CONFIG_BOOTP_BOOTFILESIZE	1
++#define CONFIG_BOOTP_BOOTPATH		1
++#define CONFIG_BOOTP_GATEWAY		1
++#define CONFIG_BOOTP_HOSTNAME		1
++
++/*
+  * Command line configuration.
+  */
+ #include <config_cmd_default.h>
+ #undef CONFIG_CMD_BDI
+ #undef CONFIG_CMD_FPGA
+-#undef CONFIG_CMD_IMI
+ #undef CONFIG_CMD_IMLS
+ #undef CONFIG_CMD_LOADS
+-#undef CONFIG_CMD_NET
+-#undef CONFIG_CMD_SOURCE
+-#undef CONFIG_CMD_USB
++
++#define CONFIG_CMD_PING		1
++#define CONFIG_CMD_DHCP		1
++#define CONFIG_CMD_USB		1
+ 
+ /* SDRAM */
+ #define CONFIG_NR_DRAM_BANKS		1
+@@ -122,6 +130,25 @@
+ /* NOR flash - no real flash on this board */
+ #define CONFIG_SYS_NO_FLASH			1
+ 
++/* Ethernet */
++#define CONFIG_MACB			1
++#define CONFIG_RMII			1
++#define CONFIG_NET_MULTI		1
++#define CONFIG_NET_RETRY_COUNT		20
++#define CONFIG_RESET_PHY_R		1
++#define CONFIG_MACB_SEARCH_PHY		1
++
++/* USB */
++#define CONFIG_USB_ATMEL
++#define CONFIG_USB_OHCI_NEW		1
++#define CONFIG_DOS_PARTITION		1
++#define CONFIG_SYS_USB_OHCI_CPU_INIT	1
++#define CONFIG_SYS_USB_OHCI_REGS_BASE	0x00500000	/* AT91SAM9260_UHP_BASE */
++#define CONFIG_SYS_USB_OHCI_SLOT_NAME	"at91sam9260"
++#define CONFIG_SYS_USB_OHCI_MAX_ROOT_PORTS	2
++#define CONFIG_USB_STORAGE		1
++#define CONFIG_CMD_FAT			1
++
+ #define CONFIG_DOS_PARTITION		1
+ #define CONFIG_CMD_FAT			1
+ 

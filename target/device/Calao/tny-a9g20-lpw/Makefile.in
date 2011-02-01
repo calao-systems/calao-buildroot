@@ -1,0 +1,4 @@
+BOARD_PATH=target/device/Calao/tny-a9g20-lpw
+
+TARGET_SKELETON=$(BOARD_PATH)/target_skeleton
+

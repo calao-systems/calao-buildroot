@@ -1,0 +1,197 @@
+menuconfig BR2_TARGET_CALAO
+	bool "Calao-systems Board Support"
+	depends on BR2_arm
+
+if BR2_TARGET_CALAO
+
+comment "Board Selection"
+
+choice
+	prompt	"Calao-systems target board"
+	default BR2_TARGET_USB_A9260
+
+config BR2_TARGET_USB_A9260
+	bool "Board support for the USB-A9260 Embedded Computer"
+	depends on BR2_TARGET_CALAO
+	help
+	  Calao-Systems USB-A9260 Embedded Computer
+
+config BR2_TARGET_TNY_A9260
+	bool "Board support for the TNY-A9260 Core module"
+	depends on BR2_TARGET_CALAO
+	help
+	  Calao-Systems TNY-A9260 Core module
+
+config BR2_TARGET_QIL_A9260
+	bool "Board support for the QIL-A9260 Module"
+	depends on BR2_TARGET_CALAO
+	help
+	  Calao-Systems QIL-A9260 Module
+
+config BR2_TARGET_SBC35_A9260
+	bool "Board support for the SBC35-A9260 board"
+	depends on BR2_TARGET_CALAO
+	help
+	  Calao-Systems SBC35-A9260 board
+
+config BR2_TARGET_USB_A9263
+	bool "Board support for the USB-A9263 Embedded Computer"
+	depends on BR2_TARGET_CALAO
+	help
+	  Calao-Systems USB-A9263 Embedded Computer
+
+config BR2_TARGET_TNY_A9263
+	bool "Board support for the TNY-A9263 Core module"
+	depends on BR2_TARGET_CALAO
+	help
+	  Calao-Systems USB-A9263 Embedded Computer
+
+config BR2_TARGET_USB_A9G20
+	bool "Board support for the USB-A9G20 Embedded Computer"
+	depends on BR2_TARGET_CALAO
+	help
+	  Calao-Systems USB-A9G20 Embedded Computer
+
+config BR2_TARGET_USB_A9G20_LPW
+	bool "Board support for the USB-A9G20-LPW Embedded Computer"
+	depends on BR2_TARGET_CALAO
+	help
+	  Calao-Systems USB-A9G20-LPW Embedded Computer
+
+config BR2_TARGET_TNY_A9G20
+	bool "Board support for the TNY-A9G20 Core module"
+	depends on BR2_TARGET_CALAO
+	help
+	  Calao-Systems TNY-A9G20 Core module
+
+config BR2_TARGET_TNY_A9G20_LPW
+	bool "Board support for the TNY-A9G20-LPW Core module"
+	depends on BR2_TARGET_CALAO
+	help
+	  Calao-Systems TNY-A9G20-LPW Core module
+
+config BR2_TARGET_QIL_A9G20
+	bool "Board support for the QIL-A9G20 Module"
+	depends on BR2_TARGET_CALAO
+	help
+	  Calao-Systems QIL-A9G20 Module
+
+config BR2_TARGET_SBC35_A9G20
+	bool "Board support for the SBC35-A9G20 board"
+	depends on BR2_TARGET_CALAO
+	help
+	  Calao-Systems SBC35-A9G20 board
+
+endchoice
+
+if BR2_TARGET_USB_A9260
+
+config BR2_BOARD_NAME
+	string
+	default "usb-a9260"
+
+endif
+
+if BR2_TARGET_TNY_A9260
+
+config BR2_BOARD_NAME
+	string
+	default "tny-a9260"
+
+endif
+
+if BR2_TARGET_QIL_A9260
+
+config BR2_BOARD_NAME
+	string
+	default "qil-a9260"
+
+endif
+
+if BR2_TARGET_SBC35_A9260
+
+config BR2_BOARD_NAME
+	string
+	default "sbc35-a9260"
+
+endif
+
+if BR2_TARGET_USB_A9263
+
+config BR2_BOARD_NAME
+	string	
+	default "usb-a9263"	
+
+endif
+
+if BR2_TARGET_TNY_A9263
+
+config BR2_BOARD_NAME
+	string	
+	default "tny-a9263"	
+
+endif
+
+if BR2_TARGET_USB_A9G20
+
+config BR2_BOARD_NAME
+	string
+	default "usb-a9g20"
+
+endif
+
+if BR2_TARGET_USB_A9G20_LPW
+
+config BR2_BOARD_NAME
+	string
+	default "usb-a9g20-lpw"
+
+
+endif
+
+if BR2_TARGET_TNY_A9G20
+
+config BR2_BOARD_NAME
+	string
+	default "tny-a9g20"
+
+endif
+
+if BR2_TARGET_TNY_A9G20_LPW
+
+config BR2_BOARD_NAME
+	string
+	default "tny-a9g20-lpw"
+
+endif
+
+if BR2_TARGET_QIL_A9G20
+
+config BR2_BOARD_NAME
+	string
+	default "qil-a9g20"
+
+endif
+
+if BR2_TARGET_SBC35_A9G20
+
+config BR2_BOARD_NAME
+	string
+	default "sbc35-a9g20"
+
+endif
+
+config BR2_BOARD_PATH
+	string
+	default "target/device/Calao/$(BR2_BOARD_NAME)"
+
+#config BR2_AT91_LINUXPATCH_SITE
+#	string "AT91 Linux Patch mirror site"
+#	depends on BR2_TARGET_USB_A9263 || BR2_TARGET_USB_A9G20
+#	default "http://maxim.org.za/AT91RM9200/2.6"
+#	help
+#	    Main download location for AT91 Linux stuff
+#
+#endmenu
+
+endif

@@ -1,0 +1,4 @@
+BOARD_PATH=target/device/Calao/sbc35-a9g20
+
+TARGET_SKELETON=$(BOARD_PATH)/target_skeleton
+

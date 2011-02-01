@@ -1,0 +1,9 @@
+config BR2_PACKAGE_BLUEZ_UTILS
+	bool "bluez-utils"
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_BLUEZ_LIBS	
+	select BR2_PACKAGE_PKG_CONFIG
+	help
+	  bluez utils.
+
+	  http://bluez.sf.net/download/

@@ -1,0 +1,849 @@
+diff -urN u-boot-2010.09/arch/arm/include/asm/arch-at91/memory-map.h u-boot-2010.09-usb-a9g20-lpw/arch/arm/include/asm/arch-at91/memory-map.h
+--- u-boot-2010.09/arch/arm/include/asm/arch-at91/memory-map.h	2010-09-28 23:20:55.000000000 +0200
++++ u-boot-2010.09-usb-a9g20-lpw/arch/arm/include/asm/arch-at91/memory-map.h	2010-10-15 12:41:41.000000000 +0200
+@@ -31,5 +31,6 @@
+ #define USART2_BASE AT91_USART2
+ #define USART3_BASE (AT91_BASE_SYS + AT91_DBGU)
+ #define SPI0_BASE	AT91_BASE_SPI
++#define SPI1_BASE	(AT91_BASE_SPI + 0x4000)
+ 
+ #endif /* __ASM_ARM_ARCH_MEMORYMAP_H__ */
+diff -urN u-boot-2010.09/board/calao/usb_a9g20_lpw/config.mk u-boot-2010.09-usb-a9g20-lpw/board/calao/usb_a9g20_lpw/config.mk
+--- u-boot-2010.09/board/calao/usb_a9g20_lpw/config.mk	1970-01-01 01:00:00.000000000 +0100
++++ u-boot-2010.09-usb-a9g20-lpw/board/calao/usb_a9g20_lpw/config.mk	2010-10-15 09:50:58.000000000 +0200
+@@ -0,0 +1 @@
++TEXT_BASE = 0x23f00000
+diff -urN u-boot-2010.09/board/calao/usb_a9g20_lpw/Makefile u-boot-2010.09-usb-a9g20-lpw/board/calao/usb_a9g20_lpw/Makefile
+--- u-boot-2010.09/board/calao/usb_a9g20_lpw/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ u-boot-2010.09-usb-a9g20-lpw/board/calao/usb_a9g20_lpw/Makefile	2010-10-01 10:55:09.000000000 +0200
+@@ -0,0 +1,55 @@
++#
++# (C) Copyright 2003-2008
++# Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++#
++# (C) Copyright 2008
++# Stelian Pop <stelian.pop@leadtechdesign.com>
++# Lead Tech Design <www.leadtechdesign.com>
++#
++# See file CREDITS for list of people who contributed to this
++# project.
++#
++# This program is free software; you can redistribute it and/or
++# modify it under the terms of the GNU General Public License as
++# published by the Free Software Foundation; either version 2 of
++# the License, or (at your option) any later version.
++#
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++# GNU General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program; if not, write to the Free Software
++# Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++# MA 02111-1307 USA
++#
++
++include $(TOPDIR)/config.mk
++
++LIB	= $(obj)lib$(BOARD).a
++
++COBJS-y	+= usb_a9g20_lpw.o
++COBJS-$(CONFIG_ATMEL_SPI)	+= spi.o
++
++SRCS	:= $(SOBJS:.o=.S) $(COBJS-y:.o=.c)
++OBJS	:= $(addprefix $(obj),$(COBJS-y))
++SOBJS	:= $(addprefix $(obj),$(SOBJS))
++
++$(LIB):	$(obj).depend $(OBJS) $(SOBJS)
++	$(AR) $(ARFLAGS) $@ $(OBJS) $(SOBJS)
++
++clean:
++	rm -f $(SOBJS) $(OBJS)
++
++distclean:	clean
++	rm -f $(LIB) core *.bak $(obj).depend
++
++#########################################################################
++
++# defines $(obj).depend target
++include $(SRCTREE)/rules.mk
++
++sinclude $(obj).depend
++
++#########################################################################
+diff -urN u-boot-2010.09/board/calao/usb_a9g20_lpw/spi.c u-boot-2010.09-usb-a9g20-lpw/board/calao/usb_a9g20_lpw/spi.c
+--- u-boot-2010.09/board/calao/usb_a9g20_lpw/spi.c	1970-01-01 01:00:00.000000000 +0100
++++ u-boot-2010.09-usb-a9g20-lpw/board/calao/usb_a9g20_lpw/spi.c	2010-10-15 11:39:20.000000000 +0200
+@@ -0,0 +1,50 @@
++/*
++ * Copyright (C) 2010
++ * Gregory Hermant, calao-systems <gregory.hermant@calao-systems.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++#include <asm/arch/hardware.h>
++#include <asm/arch/at91_spi.h>
++#include <asm/arch/gpio.h>
++#include <spi.h>
++
++#define USB_A9G20_LPW_CS_PIN	AT91_PIN_PB3
++
++int spi_cs_is_valid(unsigned int bus, unsigned int cs)
++{
++	return bus == 1 && cs == 0;
++}
++
++void spi_cs_activate(struct spi_slave *slave)
++{
++	at91_set_gpio_value(USB_A9G20_LPW_CS_PIN, 0);
++}
++
++void spi_cs_deactivate(struct spi_slave *slave)
++{
++	at91_set_gpio_value(USB_A9G20_LPW_CS_PIN, 1);
++}
++
++void spi_init_f(void)
++{
++	/* everything done in board_init */
++}
+diff -urN u-boot-2010.09/board/calao/usb_a9g20_lpw/usb_a9g20_lpw.c u-boot-2010.09-usb-a9g20-lpw/board/calao/usb_a9g20_lpw/usb_a9g20_lpw.c
+--- u-boot-2010.09/board/calao/usb_a9g20_lpw/usb_a9g20_lpw.c	1970-01-01 01:00:00.000000000 +0100
++++ u-boot-2010.09-usb-a9g20-lpw/board/calao/usb_a9g20_lpw/usb_a9g20_lpw.c	2010-10-15 10:40:59.000000000 +0200
+@@ -0,0 +1,204 @@
++/*
++ * (C) Copyright 2007-2008
++ * Stelian Pop <stelian.pop@leadtechdesign.com>
++ * Lead Tech Design <www.leadtechdesign.com>
++ *
++ * Copyright (C) 2010
++ * Gregory Hermant, calao-systems <gregory.hermant@calao-systems.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++#include <asm/arch/at91sam9260.h>
++#include <asm/arch/at91sam9260_matrix.h>
++#include <asm/arch/at91sam9_smc.h>
++#include <asm/arch/at91_common.h>
++#include <asm/arch/at91_pmc.h>
++#include <asm/arch/at91_rstc.h>
++#include <asm/arch/gpio.h>
++#include <asm/arch/io.h>
++#include <asm/arch/hardware.h>
++#if defined(CONFIG_RESET_PHY_R) && defined(CONFIG_MACB)
++#include <net.h>
++#endif
++#include <netdev.h>
++
++DECLARE_GLOBAL_DATA_PTR;
++
++/* ------------------------------------------------------------------------- */
++/*
++ * Miscelaneous platform dependent initialisations
++ */
++
++#ifdef CONFIG_CMD_NAND
++static void usb_a9g20_lpw_nand_hw_init(void)
++{
++	unsigned long csa;
++
++	/* Enable CS3 */
++	csa = at91_sys_read(AT91_MATRIX_EBICSA);
++	at91_sys_write(AT91_MATRIX_EBICSA,
++		       csa | AT91_MATRIX_CS3A_SMC_SMARTMEDIA);
++
++	/* Configure SMC CS3 for NAND/SmartMedia */
++	at91_sys_write(AT91_SMC_SETUP(3),
++		       AT91_SMC_NWESETUP_(1) | AT91_SMC_NCS_WRSETUP_(0) |
++		       AT91_SMC_NRDSETUP_(1) | AT91_SMC_NCS_RDSETUP_(0));
++	at91_sys_write(AT91_SMC_PULSE(3),
++		       AT91_SMC_NWEPULSE_(3) | AT91_SMC_NCS_WRPULSE_(3) |
++		       AT91_SMC_NRDPULSE_(3) | AT91_SMC_NCS_RDPULSE_(3));
++	at91_sys_write(AT91_SMC_CYCLE(3),
++		       AT91_SMC_NWECYCLE_(5) | AT91_SMC_NRDCYCLE_(5));
++	at91_sys_write(AT91_SMC_MODE(3),
++		       AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
++		       AT91_SMC_EXNWMODE_DISABLE |
++		       AT91_SMC_DBW_8 |
++		       AT91_SMC_TDF_(2));
++
++	at91_sys_write(AT91_PMC_PCER, 1 << AT91SAM9260_ID_PIOC);
++
++	/* Configure RDY/BSY */
++	at91_set_gpio_input(CONFIG_SYS_NAND_READY_PIN, 1);
++
++	/* Enable NandFlash */
++	at91_set_gpio_output(CONFIG_SYS_NAND_ENABLE_PIN, 1);
++}
++#endif
++
++#ifdef CONFIG_MACB
++static void usb_a9g20_lpw_macb_hw_init(void)
++{
++	unsigned long rstc;
++
++	/* Enable clock */
++	at91_sys_write(AT91_PMC_PCER, 1 << AT91SAM9260_ID_EMAC);
++
++	/*
++	 * Disable pull-up on:
++	 *	RXDV (PA17) => PHY normal mode (not Test mode)
++	 *	ERX0 (PA14) => PHY ADDR0
++	 *	ERX1 (PA15) => PHY ADDR1
++	 *	ERX2 (PA25) => PHY ADDR2
++	 *	ERX3 (PA26) => PHY ADDR3
++	 *	ECRS (PA28) => PHY ADDR4  => PHYADDR = 0x0
++	 *
++	 * PHY has internal pull-down
++	 */
++	writel(pin_to_mask(AT91_PIN_PA14) |
++	       pin_to_mask(AT91_PIN_PA15) |
++	       pin_to_mask(AT91_PIN_PA17) |
++	       pin_to_mask(AT91_PIN_PA25) |
++	       pin_to_mask(AT91_PIN_PA26) |
++	       pin_to_mask(AT91_PIN_PA28),
++	       pin_to_controller(AT91_PIN_PA0) + PIO_PUDR);
++
++	rstc = at91_sys_read(AT91_RSTC_MR) & AT91_RSTC_ERSTL;
++
++	/* Need to reset PHY -> 500ms reset */
++	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
++				     (AT91_RSTC_ERSTL & (0x0D << 8)) |
++				     AT91_RSTC_URSTEN);
++
++	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
++
++	/* Wait for end hardware reset */
++	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL));
++
++	/* Restore NRST value */
++	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
++				     (rstc) |
++				     AT91_RSTC_URSTEN);
++
++	/* Re-enable pull-up */
++	writel(pin_to_mask(AT91_PIN_PA14) |
++	       pin_to_mask(AT91_PIN_PA15) |
++	       pin_to_mask(AT91_PIN_PA17) |
++	       pin_to_mask(AT91_PIN_PA25) |
++	       pin_to_mask(AT91_PIN_PA26) |
++	       pin_to_mask(AT91_PIN_PA28),
++	       pin_to_controller(AT91_PIN_PA0) + PIO_PUER);
++
++	at91_macb_hw_init();
++}
++#endif
++
++int board_init(void)
++{
++	/* Enable Ctrlc */
++	console_init_f();
++
++	gd->bd->bi_arch_number = MACH_TYPE_USB_A9G20;
++	/* adress of boot parameters */
++	gd->bd->bi_boot_params = PHYS_SDRAM + 0x100;
++
++	at91_serial_hw_init();
++	usb_a9g20_lpw_nand_hw_init();
++#ifdef CONFIG_ATMEL_SPI
++	at91_spi1_hw_init(1 << 4);
++#endif
++#ifdef CONFIG_MACB
++	usb_a9g20_lpw_macb_hw_init();
++#endif
++
++	return 0;
++}
++
++int dram_init(void)
++{
++	gd->bd->bi_dram[0].start = PHYS_SDRAM;
++	if(get_ram_size((long *) PHYS_SDRAM, PHYS_SDRAM_SIZE) != PHYS_SDRAM_SIZE)
++		return -1;
++
++	gd->bd->bi_dram[0].size = PHYS_SDRAM_SIZE;
++	return 0;
++}
++
++#ifdef CONFIG_RESET_PHY_R
++void reset_phy(void)
++{
++}
++#endif
++
++int board_eth_init(bd_t *bis)
++{
++	int rc = 0;
++#ifdef CONFIG_MACB
++	rc = macb_eth_initialize(0, (void *)AT91SAM9260_BASE_EMAC, 0x00);
++#endif
++	return rc;
++}
++
++#ifdef CONFIG_SOFT_I2C
++
++void i2c_init_board(void)
++{
++
++	/* Enable clock */
++	at91_sys_write(AT91_PMC_PCER, 1 << AT91SAM9260_ID_PIOA);
++
++	at91_set_pio_output(AT91_PIO_PORTA,23,1);
++	at91_set_pio_multi_drive(AT91_PIO_PORTA,23,1);
++
++	at91_set_pio_output(AT91_PIO_PORTA,24,1);
++	at91_set_pio_multi_drive(AT91_PIO_PORTA,24,1);
++
++}
++
++#endif
+diff -urN u-boot-2010.09/drivers/rtc/Makefile u-boot-2010.09-usb-a9g20-lpw/drivers/rtc/Makefile
+--- u-boot-2010.09/drivers/rtc/Makefile	2010-09-28 23:20:55.000000000 +0200
++++ u-boot-2010.09-usb-a9g20-lpw/drivers/rtc/Makefile	2010-10-07 11:51:54.000000000 +0200
+@@ -59,6 +59,7 @@
+ COBJS-$(CONFIG_RTC_PL031) += pl031.o
+ COBJS-$(CONFIG_RTC_RS5C372A) += rs5c372.o
+ COBJS-$(CONFIG_RTC_RTC4543) += rtc4543.o
++COBJS-$(CONFIG_RTC_RV3029C2) += rv3029c2.o
+ COBJS-$(CONFIG_RTC_RX8025) += rx8025.o
+ COBJS-$(CONFIG_RTC_S3C24X0) += s3c24x0_rtc.o
+ COBJS-$(CONFIG_RTC_S3C44B0) += s3c44b0_rtc.o
+diff -urN u-boot-2010.09/drivers/rtc/rv3029c2.c u-boot-2010.09-usb-a9g20-lpw/drivers/rtc/rv3029c2.c
+--- u-boot-2010.09/drivers/rtc/rv3029c2.c	1970-01-01 01:00:00.000000000 +0100
++++ u-boot-2010.09-usb-a9g20-lpw/drivers/rtc/rv3029c2.c	2010-10-13 11:28:22.000000000 +0200
+@@ -0,0 +1,260 @@
++/*
++ * (C) Copyright 2010
++ * Grégory Hermant, calao-systems, gregory.hermant@calao-systems.com
++ *
++ * Modelled after the isl1208 driver
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++/*
++ * Date & Time support (no alarms) for MicroCrystal
++ * RV3029C2 Real Time Clock (RTC).
++ */
++
++#include <common.h>
++#include <command.h>
++#include <rtc.h>
++#include <i2c.h>
++#define DEBUG_RTC	1
++/*---------------------------------------------------------------------*/
++#ifdef DEBUG_RTC
++#define DEBUGR(fmt,args...) printf(fmt ,##args)
++#else
++#define DEBUGR(fmt,args...)
++#endif
++/*---------------------------------------------------------------------*/
++
++/*
++ * RTC register addresses
++ */
++
++#define RTC_CTRL_1_REG_ADDR	0x0
++#define RTC_CTRL_STAT_REG_ADDR	0x3
++#define RTC_CTRL_RST_REG_ADDR	0x4
++#define RTC_SEC_REG_ADDR	0x8
++#define RTC_MIN_REG_ADDR	0x9
++#define RTC_HR_REG_ADDR		0xA
++#define RTC_DATE_REG_ADDR	0xB
++#define RTC_DAY_REG_ADDR	0xC
++#define RTC_MON_REG_ADDR	0xD
++#define RTC_YR_REG_ADDR		0xE
++#define RTC_CTRL_E2P_REG_ADDR	0x30
++
++/*
++ * RTC control_1 register bits
++ */
++#define RTC_CTRL_1_BIT_WE	0x01	/* 1HZ CLK FOR WATCH ENABLE BIT */
++#define RTC_CTRL_1_BIT_EERE	0x08	/* Automatic EEPROM refresh */
++
++/*
++ * RTC control status register bits
++ */
++#define RTC_STAT_BIT_BAT	0x02	/* BATTERY BIT */
++#define RTC_STAT_BIT_RTCF	0x01	/* REAL TIME CLOCK FAIL BIT */
++#define RTC_CTRL_STAT_VL1	0x08	/* Vlow1 bit	*/
++#define RTC_CTRL_STAT_VL2	0x04	/* Vlow2 bit	*/
++#define RTC_CTRL_STAT_SR	0x10	/* SR flag */
++#define RTC_CTRL_STAT_PON	0x20	/* Power ON bit	*/
++#define RTC_CTRL_STAT_EEBUSY	0x80	/* EEPROM Busy bit	*/
++
++/*
++ * RTC control reset register bits
++ */
++#define RTC_CTRL_RST_BIT_SYSR	0x10	/* System Reset	*/
++
++/*
++ * RTC hours register bits
++ */
++#define RTC_HR_12_24_BIT	0x60	/* 12-24 (0=24; 1=12) */
++#define RTC_HR_20_PM_BIT	0x40	/* 20_PM (1=PM) */
++
++/*
++ * RTC eeprom control register bits
++ */
++#define RTC_CTRL_E2P_R1K_BIT	0x10
++#define RTC_CTRL_E2P_R5K_BIT	0x20
++#define RTC_CTRL_E2P_R20K_BIT	0x40
++#define RTC_CTRL_E2P_R80K_BIT	0x80
++
++static uchar rtc_read (uchar reg);
++static void rtc_write (uchar reg, uchar val);
++
++/*
++ * Get the current time from the RTC
++ */
++
++int rtc_get (struct rtc_time *tmp)
++{
++	int rel = 0;
++	uchar sec, min, hour, mday, wday, mon, year, status;
++
++	status = rtc_read (RTC_CTRL_STAT_REG_ADDR);
++	sec = rtc_read (RTC_SEC_REG_ADDR);
++	min = rtc_read (RTC_MIN_REG_ADDR);
++	hour = rtc_read (RTC_HR_REG_ADDR);
++	wday = rtc_read (RTC_DAY_REG_ADDR);
++	mday = rtc_read (RTC_DATE_REG_ADDR);
++	mon = rtc_read (RTC_MON_REG_ADDR);
++	year = rtc_read (RTC_YR_REG_ADDR);
++
++	DEBUGR ("Get RTC year: %02x mon: %02x mday: %02x wday: %02x "
++		"hr: %02x min: %02x sec: %02x status: %02x\n",
++		year, mon, mday, wday, hour, min, sec, status);
++
++	if ((status & RTC_CTRL_STAT_PON) | (status & RTC_CTRL_STAT_VL2)) {
++		printf ("### Warning: Date & Time corrupted \n");
++		printf ("### Please ajust the date & time \n");
++		rel = -1;
++	} 
++
++	tmp->tm_sec  = bcd2bin (sec & 0x7F);
++	tmp->tm_min  = bcd2bin (min & 0x7F);
++	tmp->tm_hour = bcd2bin (hour & 0x3F);
++	tmp->tm_mday = bcd2bin (mday & 0x3F);
++	tmp->tm_mon  = bcd2bin (mon & 0x1F) ;
++	tmp->tm_year = bcd2bin (year & 0x7F)+2000;
++	tmp->tm_wday = bcd2bin (wday & 0x07) -1;
++	tmp->tm_yday = 0;
++	tmp->tm_isdst= 0;
++
++	DEBUGR ("Get DATE: %4d-%02d-%02d (wday=%d)  TIME: %2d:%02d:%02d\n",
++		tmp->tm_year, tmp->tm_mon, tmp->tm_mday, tmp->tm_wday,
++		tmp->tm_hour, tmp->tm_min, tmp->tm_sec);
++
++	return rel;
++}
++
++/*
++ * Set the RTC
++ */
++int rtc_set (struct rtc_time *tmp)
++{
++	DEBUGR ("Set DATE: %4d-%02d-%02d (wday=%d)  TIME: %2d:%02d:%02d\n",
++		tmp->tm_year, tmp->tm_mon, tmp->tm_mday, tmp->tm_wday,
++		tmp->tm_hour, tmp->tm_min, tmp->tm_sec);
++
++	/* disable 1HZ clk source for watch */
++	rtc_write(RTC_CTRL_1_REG_ADDR,
++		rtc_read(RTC_CTRL_1_REG_ADDR) & ~RTC_CTRL_1_BIT_WE);
++
++	rtc_write (RTC_YR_REG_ADDR, bin2bcd (tmp->tm_year % 100));
++	rtc_write (RTC_MON_REG_ADDR, bin2bcd (tmp->tm_mon));
++	rtc_write (RTC_DAY_REG_ADDR, bin2bcd ((tmp->tm_wday)+1));
++	rtc_write (RTC_DATE_REG_ADDR, bin2bcd (tmp->tm_mday));
++	rtc_write (RTC_HR_REG_ADDR, bin2bcd (tmp->tm_hour) & ~(RTC_HR_12_24_BIT) ); /* 24h mode */
++	rtc_write (RTC_MIN_REG_ADDR, bin2bcd (tmp->tm_min));
++	rtc_write (RTC_SEC_REG_ADDR, bin2bcd (tmp->tm_sec));
++
++	/* clear PON bit */
++	rtc_write(RTC_CTRL_STAT_REG_ADDR,
++			rtc_read(RTC_CTRL_STAT_REG_ADDR) & ~(RTC_CTRL_STAT_PON));
++
++	/* enable 1HZ clk source for watch */
++	rtc_write(RTC_CTRL_1_REG_ADDR,
++		rtc_read(RTC_CTRL_1_REG_ADDR) | RTC_CTRL_1_BIT_WE);
++
++	return 0;
++}
++
++void rtc_reset (void)
++{
++	uchar busy, trickle, sr;
++
++	/* Execute a system reset */
++	rtc_write(RTC_CTRL_RST_REG_ADDR,
++			rtc_read(RTC_CTRL_RST_REG_ADDR) | RTC_CTRL_RST_BIT_SYSR);
++
++	/* Wait until SR bit = 1 */	
++	reset_timer_masked();
++	do {
++		sr = rtc_read(RTC_CTRL_STAT_REG_ADDR);
++	  	if (sr & RTC_CTRL_STAT_SR)
++			break;
++
++	} while (get_timer_masked() < 5000);	/* 5ms */
++
++	if (!(sr & RTC_CTRL_STAT_SR))
++		printf ("*** System reset not executed: Time out !\n");
++	
++	/* clear SR flag */
++	rtc_write(RTC_CTRL_STAT_REG_ADDR,
++			rtc_read(RTC_CTRL_STAT_REG_ADDR) & ~(RTC_CTRL_STAT_SR));
++
++	/* Enable the trickle charger */
++
++	/* Disable Automatic EEPROM Refresh */
++	rtc_write(RTC_CTRL_1_REG_ADDR,
++			rtc_read(RTC_CTRL_1_REG_ADDR) & ~(RTC_CTRL_1_BIT_EERE));
++	
++	/* Wait until busy bit=0 */	
++	reset_timer_masked();
++	do {
++		busy = rtc_read(RTC_CTRL_STAT_REG_ADDR);
++	  	if (!(busy & RTC_CTRL_STAT_EEBUSY))
++			break;
++
++	} while (get_timer_masked() < 30000);	/* 30ms */
++
++	if (busy & RTC_CTRL_STAT_EEBUSY)
++		printf ("*** EEPROM busy: Time out !\n");
++
++	/* Read the trickle value */
++	trickle = rtc_read(RTC_CTRL_E2P_REG_ADDR);
++
++	if (trickle == RTC_CTRL_E2P_R1K_BIT) {
++		printf ("*** Trickle value already initialized ... \n");
++	} else {
++
++		/* Init the trickle value in the EEPROM control page register */
++		rtc_write(RTC_CTRL_E2P_REG_ADDR,
++				rtc_read(RTC_CTRL_E2P_REG_ADDR) | (RTC_CTRL_E2P_R1K_BIT));
++	
++		/* Wait until busy bit=0 */
++		reset_timer_masked();
++		do {
++			busy = rtc_read(RTC_CTRL_STAT_REG_ADDR);
++	  		if (!(busy & RTC_CTRL_STAT_EEBUSY))
++				break;
++
++		} while (get_timer_masked() < 30000); /* 30ms */
++
++		if (busy & RTC_CTRL_STAT_EEBUSY)
++		printf ("*** EEPROM busy: Time out !\n");
++	}
++
++	/* Enable Automatic EEPROM Refresh */
++	rtc_write(RTC_CTRL_1_REG_ADDR,
++			rtc_read(RTC_CTRL_1_REG_ADDR) | (RTC_CTRL_1_BIT_EERE));
++
++	/* clear PON bit */
++	rtc_write(RTC_CTRL_STAT_REG_ADDR,
++			rtc_read(RTC_CTRL_STAT_REG_ADDR) & ~(RTC_CTRL_STAT_PON));
++}
++
++/*
++ * Helper functions
++ */
++
++static uchar rtc_read (uchar reg)
++{
++	return (i2c_reg_read (CONFIG_SYS_I2C_RTC_ADDR, reg));
++}
++
++static void rtc_write (uchar reg, uchar val)
++{
++	i2c_reg_write (CONFIG_SYS_I2C_RTC_ADDR, reg, val);
++}
+diff -urN u-boot-2010.09/include/configs/usb_a9g20_lpw.h u-boot-2010.09-usb-a9g20-lpw/include/configs/usb_a9g20_lpw.h
+--- u-boot-2010.09/include/configs/usb_a9g20_lpw.h	1970-01-01 01:00:00.000000000 +0100
++++ u-boot-2010.09-usb-a9g20-lpw/include/configs/usb_a9g20_lpw.h	2011-01-03 18:03:19.000000000 +0100
+@@ -0,0 +1,218 @@
++/*
++ * (C) Copyright 2007-2008
++ * Stelian Pop <stelian.pop@leadtechdesign.com>
++ * Lead Tech Design <www.leadtechdesign.com>
++ *
++ * Copyright (C) 2010
++ * Gregory Hermant, calao-systems <gregory.hermant@calao-systems.com>
++ *
++ * Configuation settings for the Calao USB-A9G20-LPW board
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#ifndef __CONFIG_H
++#define __CONFIG_H
++
++#define CONFIG_AT91_LEGACY
++#define CONFIG_AT91SAM9G20
++
++#define CONFIG_ENV_IS_IN_NAND
++
++/* ARM asynchronous clock */
++#define CONFIG_SYS_AT91_MAIN_CLOCK	12000000	/* 12.000 MHz osc */
++#define CONFIG_SYS_HZ		1000
++
++#define CONFIG_ARM926EJS	1	/* This is an ARM926EJS Core	*/
++
++#define CONFIG_ARCH_CPU_INIT
++#undef CONFIG_USE_IRQ			/* we don't need IRQ/FIQ stuff	*/
++
++#define CONFIG_CMDLINE_TAG		1	/* enable passing of ATAGs */
++#define CONFIG_SETUP_MEMORY_TAGS	1
++#define CONFIG_INITRD_TAG		1
++
++#define CONFIG_SKIP_LOWLEVEL_INIT
++#define CONFIG_SKIP_RELOCATE_UBOOT
++
++/*
++ * Hardware drivers
++ */
++#define CONFIG_AT91_GPIO	1
++#define CONFIG_ATMEL_USART	1
++#undef CONFIG_USART0
++#undef CONFIG_USART1
++#undef CONFIG_USART2
++#define CONFIG_USART3		1	/* USART 3 is DBGU */
++
++#define CONFIG_BOOTDELAY	3
++
++
++/*
++ * BOOTP options
++ */
++#define CONFIG_BOOTP_BOOTFILESIZE	1
++#define CONFIG_BOOTP_BOOTPATH		1
++#define CONFIG_BOOTP_GATEWAY		1
++#define CONFIG_BOOTP_HOSTNAME		1
++
++/*
++ * Command line configuration.
++ */
++#include <config_cmd_default.h>
++#undef CONFIG_CMD_BDI
++#undef CONFIG_CMD_FPGA
++#undef CONFIG_CMD_IMLS
++#undef CONFIG_CMD_LOADS
++
++#define CONFIG_CMD_PING		1
++#define CONFIG_CMD_DHCP		1
++#define CONFIG_CMD_USB		1
++
++#define CONFIG_CMD_DATE		1
++
++#define CONFIG_CMD_I2C		1
++
++/* SDRAM */
++#define CONFIG_NR_DRAM_BANKS	1
++#define PHYS_SDRAM		0x20000000
++#if defined(CONFIG_USB_A9G20_LPW_128M)
++#define PHYS_SDRAM_SIZE		0x08000000	/* 128 megs */
++#else
++#define PHYS_SDRAM_SIZE		0x04000000	/* 64 megs */
++#endif
++
++/* SPI (microSD on SPI1 "NPCS0")  */
++#define CONFIG_SPI
++#define CONFIG_CMD_SPI
++#define CONFIG_ATMEL_SPI
++#define CONFIG_DEFAULT_SPI_BUS		1
++
++/* I2C SOFT */
++
++#define CONFIG_SOFT_I2C			1
++#define CONFIG_SYS_I2C_SPEED		50000
++
++#define AT91_PIN_SDA			24		/* AT91_PIO_PA24 */
++#define AT91_PIN_SCL			23		/* AT91_PIO_PA23 */
++
++#define CONFIG_SYS_I2C_INIT_BOARD
++
++#define I2C_INIT	i2c_init_board();
++#define I2C_ACTIVE 	NULL
++
++#define I2C_TRISTATE	NULL
++
++#define I2C_READ	(at91_get_pio_value(0,AT91_PIN_SDA) != 0);
++#define I2C_SDA(bit)						\
++	if (bit)						\
++		at91_set_pio_value(0,AT91_PIN_SDA,1);		\
++	else							\
++		at91_set_pio_value(0,AT91_PIN_SDA,0);
++#define I2C_SCL(bit)						\
++	if (bit)						\
++		at91_set_pio_value(0,AT91_PIN_SCL,1);		\
++	else							\
++		at91_set_pio_value(0,AT91_PIN_SCL,0);
++
++#define I2C_DELAY	udelay(2500000/CONFIG_SYS_I2C_SPEED)
++
++/* I2C-RTC */
++
++#ifdef CONFIG_CMD_DATE
++#define CONFIG_RTC_RV3029C2
++#define CONFIG_SYS_I2C_RTC_ADDR	0x56
++#endif
++
++/* NAND flash */
++#define CONFIG_CMD_NAND
++#define CONFIG_NAND_ATMEL
++#define CONFIG_SYS_MAX_NAND_DEVICE		1
++#define CONFIG_SYS_NAND_BASE			0x40000000
++#define CONFIG_SYS_NAND_DBW_8			1
++/* our ALE is AD21 */
++#define CONFIG_SYS_NAND_MASK_ALE		(1 << 21)
++/* our CLE is AD22 */
++#define CONFIG_SYS_NAND_MASK_CLE		(1 << 22)
++#define CONFIG_SYS_NAND_ENABLE_PIN		AT91_PIN_PC14
++#define CONFIG_SYS_NAND_READY_PIN		AT91_PIN_PC13
++
++/* NOR flash - no real flash on this board */
++#define CONFIG_SYS_NO_FLASH			1
++
++/* Ethernet */
++#define CONFIG_MACB			1
++#define CONFIG_RMII			1
++#define CONFIG_NET_MULTI		1
++#define CONFIG_NET_RETRY_COUNT		20
++#define CONFIG_RESET_PHY_R		1
++#define CONFIG_MACB_SEARCH_PHY		1
++
++/* USB */
++#define CONFIG_USB_ATMEL
++#define CONFIG_USB_OHCI_NEW		1
++#define CONFIG_DOS_PARTITION		1
++#define CONFIG_SYS_USB_OHCI_CPU_INIT	1
++#define CONFIG_SYS_USB_OHCI_REGS_BASE	0x00500000	/* AT91SAM9260_UHP_BASE */
++#define CONFIG_SYS_USB_OHCI_SLOT_NAME	"at91sam9260"
++#define CONFIG_SYS_USB_OHCI_MAX_ROOT_PORTS	2
++#define CONFIG_USB_STORAGE		1
++#define CONFIG_CMD_FAT			1
++
++#define CONFIG_SYS_LOAD_ADDR		0x22000000	/* load address */
++
++#define CONFIG_SYS_MEMTEST_START	PHYS_SDRAM
++#define CONFIG_SYS_MEMTEST_END		0x27e00000
++
++/* Env, bootstrap and u-boot in NAND */
++#ifdef CONFIG_ENV_IS_IN_NAND
++#define CONFIG_ENV_OFFSET		0x60000
++#define CONFIG_ENV_OFFSET_REDUND	0x80000
++#define CONFIG_ENV_SIZE			0x20000
++#endif
++
++#define CONFIG_BOOTCOMMAND	"nboot 0x21000000 0 400000"
++#define CONFIG_BOOTARGS		"console=ttyS0,115200 " \
++				"root=/dev/mtdblock1 " \
++				"mtdparts=atmel_nand:16M(kernel)ro," \
++				"120M(rootfs),-(other) " \
++				"rw rootfstype=jffs2"
++
++#define CONFIG_BAUDRATE			115200
++#define CONFIG_SYS_BAUDRATE_TABLE	{115200 , 19200, 38400, 57600, 9600 }
++
++#define CONFIG_SYS_PROMPT	"U-Boot> "
++#define CONFIG_SYS_CBSIZE	256
++#define CONFIG_SYS_MAXARGS	16
++#define CONFIG_SYS_PBSIZE	(CONFIG_SYS_CBSIZE + sizeof(CONFIG_SYS_PROMPT) + 16)
++#define CONFIG_SYS_LONGHELP	1
++#define CONFIG_CMDLINE_EDITING	1
++
++/*
++ * Size of malloc() pool
++ */
++#define CONFIG_SYS_MALLOC_LEN	ROUND(3 * CONFIG_ENV_SIZE + 128 * 1024, 0x1000)
++#define CONFIG_SYS_GBL_DATA_SIZE	128	/* 128 bytes for initial data */
++#define CONFIG_STACKSIZE		(32 * 1024)	/* regular stack */
++
++#ifdef CONFIG_USE_IRQ
++#error CONFIG_USE_IRQ not supported
++#endif
++
++#endif
+diff -urN u-boot-2010.09/Makefile u-boot-2010.09-usb-a9g20-lpw/Makefile
+--- u-boot-2010.09/Makefile	2010-09-28 23:20:55.000000000 +0200
++++ u-boot-2010.09-usb-a9g20-lpw/Makefile	2010-10-15 09:50:13.000000000 +0200
+@@ -2037,6 +2037,12 @@
+ 	@echo "#define CONFIG_$(@:_config=) 1" >$(obj)include/config.h
+ 	@$(MKCONFIG) -n $@ -a tny_a9260 arm arm926ejs tny_a9260 calao at91
+ 
++USB_A9G20_LPW_128M_config \
++USB_A9G20_LPW_config	:	unconfig
++	@mkdir -p $(obj)include
++	@echo "#define CONFIG_$(@:_config=) 1" >$(obj)include/config.h
++	@$(MKCONFIG) -n $@ -a usb_a9g20_lpw arm arm926ejs usb_a9g20_lpw calao at91
++
+ ########################################################################
+ ## ARM Integrator boards - see doc/README-integrator for more info.
+ integratorap_config	\

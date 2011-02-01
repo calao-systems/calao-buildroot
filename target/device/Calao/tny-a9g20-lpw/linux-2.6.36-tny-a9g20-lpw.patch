@@ -1,0 +1,2489 @@
+diff --git a/arch/arm/configs/tny-a9g20-lpw_defconfig b/arch/arm/configs/tny-a9g20-lpw_defconfig
+new file mode 100644
+index 0000000..4836fbe
+--- /dev/null
++++ b/arch/arm/configs/tny-a9g20-lpw_defconfig
+@@ -0,0 +1,1456 @@
++#
++# Automatically generated make config: don't edit
++# Linux kernel version: 2.6.35.5
++# Wed Sep 29 14:48:36 2010
++#
++CONFIG_ARM=y
++CONFIG_SYS_SUPPORTS_APM_EMULATION=y
++CONFIG_GENERIC_GPIO=y
++CONFIG_GENERIC_TIME=y
++CONFIG_ARCH_USES_GETTIMEOFFSET=y
++CONFIG_GENERIC_CLOCKEVENTS=y
++CONFIG_HAVE_PROC_CPU=y
++CONFIG_GENERIC_HARDIRQS=y
++CONFIG_STACKTRACE_SUPPORT=y
++CONFIG_HAVE_LATENCYTOP_SUPPORT=y
++CONFIG_LOCKDEP_SUPPORT=y
++CONFIG_TRACE_IRQFLAGS_SUPPORT=y
++CONFIG_HARDIRQS_SW_RESEND=y
++CONFIG_GENERIC_IRQ_PROBE=y
++CONFIG_RWSEM_GENERIC_SPINLOCK=y
++CONFIG_GENERIC_HWEIGHT=y
++CONFIG_GENERIC_CALIBRATE_DELAY=y
++CONFIG_NEED_DMA_MAP_STATE=y
++CONFIG_GENERIC_HARDIRQS_NO__DO_IRQ=y
++CONFIG_VECTORS_BASE=0xffff0000
++CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
++CONFIG_CONSTRUCTORS=y
++
++#
++# General setup
++#
++CONFIG_EXPERIMENTAL=y
++CONFIG_BROKEN_ON_SMP=y
++CONFIG_INIT_ENV_ARG_LIMIT=32
++CONFIG_CROSS_COMPILE=""
++CONFIG_LOCALVERSION=""
++# CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_HAVE_KERNEL_GZIP=y
++CONFIG_HAVE_KERNEL_LZMA=y
++CONFIG_HAVE_KERNEL_LZO=y
++CONFIG_KERNEL_GZIP=y
++# CONFIG_KERNEL_BZIP2 is not set
++# CONFIG_KERNEL_LZMA is not set
++# CONFIG_KERNEL_LZO is not set
++# CONFIG_SWAP is not set
++CONFIG_SYSVIPC=y
++CONFIG_SYSVIPC_SYSCTL=y
++# CONFIG_POSIX_MQUEUE is not set
++# CONFIG_BSD_PROCESS_ACCT is not set
++# CONFIG_TASKSTATS is not set
++# CONFIG_AUDIT is not set
++
++#
++# RCU Subsystem
++#
++CONFIG_TREE_RCU=y
++# CONFIG_TREE_PREEMPT_RCU is not set
++# CONFIG_TINY_RCU is not set
++# CONFIG_RCU_TRACE is not set
++CONFIG_RCU_FANOUT=32
++# CONFIG_RCU_FANOUT_EXACT is not set
++# CONFIG_TREE_RCU_TRACE is not set
++# CONFIG_IKCONFIG is not set
++CONFIG_LOG_BUF_SHIFT=14
++# CONFIG_CGROUPS is not set
++CONFIG_SYSFS_DEPRECATED=y
++CONFIG_SYSFS_DEPRECATED_V2=y
++# CONFIG_RELAY is not set
++CONFIG_NAMESPACES=y
++# CONFIG_UTS_NS is not set
++# CONFIG_IPC_NS is not set
++# CONFIG_USER_NS is not set
++# CONFIG_PID_NS is not set
++# CONFIG_NET_NS is not set
++# CONFIG_BLK_DEV_INITRD is not set
++# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
++CONFIG_SYSCTL=y
++CONFIG_ANON_INODES=y
++# CONFIG_EMBEDDED is not set
++CONFIG_UID16=y
++CONFIG_SYSCTL_SYSCALL=y
++CONFIG_KALLSYMS=y
++# CONFIG_KALLSYMS_ALL is not set
++# CONFIG_KALLSYMS_EXTRA_PASS is not set
++CONFIG_HOTPLUG=y
++CONFIG_PRINTK=y
++CONFIG_BUG=y
++CONFIG_ELF_CORE=y
++CONFIG_BASE_FULL=y
++CONFIG_FUTEX=y
++CONFIG_EPOLL=y
++CONFIG_SIGNALFD=y
++CONFIG_TIMERFD=y
++CONFIG_EVENTFD=y
++CONFIG_SHMEM=y
++CONFIG_AIO=y
++CONFIG_HAVE_PERF_EVENTS=y
++CONFIG_PERF_USE_VMALLOC=y
++
++#
++# Kernel Performance Events And Counters
++#
++# CONFIG_PERF_EVENTS is not set
++# CONFIG_PERF_COUNTERS is not set
++CONFIG_VM_EVENT_COUNTERS=y
++CONFIG_COMPAT_BRK=y
++CONFIG_SLAB=y
++# CONFIG_SLUB is not set
++# CONFIG_SLOB is not set
++# CONFIG_PROFILING is not set
++CONFIG_HAVE_OPROFILE=y
++# CONFIG_KPROBES is not set
++CONFIG_HAVE_KPROBES=y
++CONFIG_HAVE_KRETPROBES=y
++CONFIG_HAVE_CLK=y
++
++#
++# GCOV-based kernel profiling
++#
++# CONFIG_GCOV_KERNEL is not set
++# CONFIG_SLOW_WORK is not set
++CONFIG_HAVE_GENERIC_DMA_COHERENT=y
++CONFIG_SLABINFO=y
++CONFIG_RT_MUTEXES=y
++CONFIG_BASE_SMALL=0
++CONFIG_MODULES=y
++# CONFIG_MODULE_FORCE_LOAD is not set
++CONFIG_MODULE_UNLOAD=y
++# CONFIG_MODULE_FORCE_UNLOAD is not set
++# CONFIG_MODVERSIONS is not set
++# CONFIG_MODULE_SRCVERSION_ALL is not set
++CONFIG_BLOCK=y
++CONFIG_LBDAF=y
++# CONFIG_BLK_DEV_BSG is not set
++# CONFIG_BLK_DEV_INTEGRITY is not set
++
++#
++# IO Schedulers
++#
++CONFIG_IOSCHED_NOOP=y
++# CONFIG_IOSCHED_DEADLINE is not set
++# CONFIG_IOSCHED_CFQ is not set
++# CONFIG_DEFAULT_DEADLINE is not set
++# CONFIG_DEFAULT_CFQ is not set
++CONFIG_DEFAULT_NOOP=y
++CONFIG_DEFAULT_IOSCHED="noop"
++# CONFIG_INLINE_SPIN_TRYLOCK is not set
++# CONFIG_INLINE_SPIN_TRYLOCK_BH is not set
++# CONFIG_INLINE_SPIN_LOCK is not set
++# CONFIG_INLINE_SPIN_LOCK_BH is not set
++# CONFIG_INLINE_SPIN_LOCK_IRQ is not set
++# CONFIG_INLINE_SPIN_LOCK_IRQSAVE is not set
++CONFIG_INLINE_SPIN_UNLOCK=y
++# CONFIG_INLINE_SPIN_UNLOCK_BH is not set
++CONFIG_INLINE_SPIN_UNLOCK_IRQ=y
++# CONFIG_INLINE_SPIN_UNLOCK_IRQRESTORE is not set
++# CONFIG_INLINE_READ_TRYLOCK is not set
++# CONFIG_INLINE_READ_LOCK is not set
++# CONFIG_INLINE_READ_LOCK_BH is not set
++# CONFIG_INLINE_READ_LOCK_IRQ is not set
++# CONFIG_INLINE_READ_LOCK_IRQSAVE is not set
++CONFIG_INLINE_READ_UNLOCK=y
++# CONFIG_INLINE_READ_UNLOCK_BH is not set
++CONFIG_INLINE_READ_UNLOCK_IRQ=y
++# CONFIG_INLINE_READ_UNLOCK_IRQRESTORE is not set
++# CONFIG_INLINE_WRITE_TRYLOCK is not set
++# CONFIG_INLINE_WRITE_LOCK is not set
++# CONFIG_INLINE_WRITE_LOCK_BH is not set
++# CONFIG_INLINE_WRITE_LOCK_IRQ is not set
++# CONFIG_INLINE_WRITE_LOCK_IRQSAVE is not set
++CONFIG_INLINE_WRITE_UNLOCK=y
++# CONFIG_INLINE_WRITE_UNLOCK_BH is not set
++CONFIG_INLINE_WRITE_UNLOCK_IRQ=y
++# CONFIG_INLINE_WRITE_UNLOCK_IRQRESTORE is not set
++# CONFIG_MUTEX_SPIN_ON_OWNER is not set
++CONFIG_FREEZER=y
++
++#
++# System Type
++#
++CONFIG_MMU=y
++# CONFIG_ARCH_AAEC2000 is not set
++# CONFIG_ARCH_INTEGRATOR is not set
++# CONFIG_ARCH_REALVIEW is not set
++# CONFIG_ARCH_VERSATILE is not set
++# CONFIG_ARCH_VEXPRESS is not set
++CONFIG_ARCH_AT91=y
++# CONFIG_ARCH_BCMRING is not set
++# CONFIG_ARCH_CLPS711X is not set
++# CONFIG_ARCH_CNS3XXX is not set
++# CONFIG_ARCH_GEMINI is not set
++# CONFIG_ARCH_EBSA110 is not set
++# CONFIG_ARCH_EP93XX is not set
++# CONFIG_ARCH_FOOTBRIDGE is not set
++# CONFIG_ARCH_MXC is not set
++# CONFIG_ARCH_STMP3XXX is not set
++# CONFIG_ARCH_NETX is not set
++# CONFIG_ARCH_H720X is not set
++# CONFIG_ARCH_IOP13XX is not set
++# CONFIG_ARCH_IOP32X is not set
++# CONFIG_ARCH_IOP33X is not set
++# CONFIG_ARCH_IXP23XX is not set
++# CONFIG_ARCH_IXP2000 is not set
++# CONFIG_ARCH_IXP4XX is not set
++# CONFIG_ARCH_L7200 is not set
++# CONFIG_ARCH_DOVE is not set
++# CONFIG_ARCH_KIRKWOOD is not set
++# CONFIG_ARCH_LOKI is not set
++# CONFIG_ARCH_MV78XX0 is not set
++# CONFIG_ARCH_ORION5X is not set
++# CONFIG_ARCH_MMP is not set
++# CONFIG_ARCH_KS8695 is not set
++# CONFIG_ARCH_NS9XXX is not set
++# CONFIG_ARCH_W90X900 is not set
++# CONFIG_ARCH_NUC93X is not set
++# CONFIG_ARCH_PNX4008 is not set
++# CONFIG_ARCH_PXA is not set
++# CONFIG_ARCH_MSM is not set
++# CONFIG_ARCH_SHMOBILE is not set
++# CONFIG_ARCH_RPC is not set
++# CONFIG_ARCH_SA1100 is not set
++# CONFIG_ARCH_S3C2410 is not set
++# CONFIG_ARCH_S3C64XX is not set
++# CONFIG_ARCH_S5P6440 is not set
++# CONFIG_ARCH_S5P6442 is not set
++# CONFIG_ARCH_S5PC100 is not set
++# CONFIG_ARCH_S5PV210 is not set
++# CONFIG_ARCH_SHARK is not set
++# CONFIG_ARCH_LH7A40X is not set
++# CONFIG_ARCH_U300 is not set
++# CONFIG_ARCH_U8500 is not set
++# CONFIG_ARCH_NOMADIK is not set
++# CONFIG_ARCH_DAVINCI is not set
++# CONFIG_ARCH_OMAP is not set
++# CONFIG_PLAT_SPEAR is not set
++CONFIG_HAVE_AT91_USART3=y
++CONFIG_HAVE_AT91_USART4=y
++CONFIG_HAVE_AT91_USART5=y
++
++#
++# Atmel AT91 System-on-Chip
++#
++# CONFIG_ARCH_AT91RM9200 is not set
++# CONFIG_ARCH_AT91SAM9260 is not set
++# CONFIG_ARCH_AT91SAM9261 is not set
++# CONFIG_ARCH_AT91SAM9G10 is not set
++# CONFIG_ARCH_AT91SAM9263 is not set
++# CONFIG_ARCH_AT91SAM9RL is not set
++CONFIG_ARCH_AT91SAM9G20=y
++# CONFIG_ARCH_AT91SAM9G45 is not set
++# CONFIG_ARCH_AT91CAP9 is not set
++# CONFIG_ARCH_AT572D940HF is not set
++# CONFIG_ARCH_AT91X40 is not set
++CONFIG_AT91_PMC_UNIT=y
++
++#
++# AT91SAM9G20 Board Type
++#
++# CONFIG_MACH_AT91SAM9G20EK is not set
++# CONFIG_MACH_AT91SAM9G20EK_2MMC is not set
++# CONFIG_MACH_CPU9G20 is not set
++# CONFIG_MACH_PORTUXG20 is not set
++# CONFIG_MACH_STAMP9G20 is not set
++CONFIG_MACH_TNY_A9G20=y
++
++#
++# AT91 Board Options
++#
++
++#
++# AT91 Feature Selections
++#
++# CONFIG_AT91_PROGRAMMABLE_CLOCKS is not set
++CONFIG_AT91_SLOW_CLOCK=y
++CONFIG_AT91_TIMER_HZ=100
++CONFIG_AT91_EARLY_DBGU=y
++# CONFIG_AT91_EARLY_USART0 is not set
++# CONFIG_AT91_EARLY_USART1 is not set
++# CONFIG_AT91_EARLY_USART2 is not set
++# CONFIG_AT91_EARLY_USART3 is not set
++# CONFIG_AT91_EARLY_USART4 is not set
++# CONFIG_AT91_EARLY_USART5 is not set
++
++#
++# Processor Type
++#
++CONFIG_CPU_ARM926T=y
++CONFIG_CPU_32v5=y
++CONFIG_CPU_ABRT_EV5TJ=y
++CONFIG_CPU_PABRT_LEGACY=y
++CONFIG_CPU_CACHE_VIVT=y
++CONFIG_CPU_COPY_V4WB=y
++CONFIG_CPU_TLB_V4WBI=y
++CONFIG_CPU_CP15=y
++CONFIG_CPU_CP15_MMU=y
++
++#
++# Processor Features
++#
++# CONFIG_ARM_THUMB is not set
++# CONFIG_CPU_ICACHE_DISABLE is not set
++# CONFIG_CPU_DCACHE_DISABLE is not set
++# CONFIG_CPU_DCACHE_WRITETHROUGH is not set
++# CONFIG_CPU_CACHE_ROUND_ROBIN is not set
++CONFIG_ARM_L1_CACHE_SHIFT=5
++
++#
++# Bus support
++#
++# CONFIG_PCI_SYSCALL is not set
++# CONFIG_ARCH_SUPPORTS_MSI is not set
++# CONFIG_PCCARD is not set
++
++#
++# Kernel Features
++#
++# CONFIG_NO_HZ is not set
++# CONFIG_HIGH_RES_TIMERS is not set
++CONFIG_GENERIC_CLOCKEVENTS_BUILD=y
++CONFIG_VMSPLIT_3G=y
++# CONFIG_VMSPLIT_2G is not set
++# CONFIG_VMSPLIT_1G is not set
++CONFIG_PAGE_OFFSET=0xC0000000
++CONFIG_PREEMPT_NONE=y
++# CONFIG_PREEMPT_VOLUNTARY is not set
++# CONFIG_PREEMPT is not set
++CONFIG_HZ=100
++# CONFIG_AEABI is not set
++# CONFIG_ARCH_SPARSEMEM_DEFAULT is not set
++# CONFIG_ARCH_SELECT_MEMORY_MODEL is not set
++# CONFIG_HIGHMEM is not set
++CONFIG_SELECT_MEMORY_MODEL=y
++CONFIG_FLATMEM_MANUAL=y
++# CONFIG_DISCONTIGMEM_MANUAL is not set
++# CONFIG_SPARSEMEM_MANUAL is not set
++CONFIG_FLATMEM=y
++CONFIG_FLAT_NODE_MEM_MAP=y
++CONFIG_PAGEFLAGS_EXTENDED=y
++CONFIG_SPLIT_PTLOCK_CPUS=999999
++# CONFIG_PHYS_ADDR_T_64BIT is not set
++CONFIG_ZONE_DMA_FLAG=0
++CONFIG_VIRT_TO_BUS=y
++# CONFIG_KSM is not set
++CONFIG_DEFAULT_MMAP_MIN_ADDR=4096
++# CONFIG_LEDS is not set
++CONFIG_ALIGNMENT_TRAP=y
++# CONFIG_UACCESS_WITH_MEMCPY is not set
++
++#
++# Boot options
++#
++CONFIG_ZBOOT_ROM_TEXT=0x0
++CONFIG_ZBOOT_ROM_BSS=0x0
++CONFIG_CMDLINE="mem=64M console=ttyS0,115200 root=/dev/mtdblock1 rootfstype=jffs2 quiet"
++# CONFIG_CMDLINE_FORCE is not set
++# CONFIG_XIP_KERNEL is not set
++# CONFIG_KEXEC is not set
++
++#
++# CPU Power Management
++#
++# CONFIG_CPU_IDLE is not set
++
++#
++# Floating point emulation
++#
++
++#
++# At least one emulation must be selected
++#
++CONFIG_FPE_NWFPE=y
++# CONFIG_FPE_NWFPE_XP is not set
++# CONFIG_FPE_FASTFPE is not set
++# CONFIG_VFP is not set
++
++#
++# Userspace binary formats
++#
++CONFIG_BINFMT_ELF=y
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++CONFIG_HAVE_AOUT=y
++# CONFIG_BINFMT_AOUT is not set
++# CONFIG_BINFMT_MISC is not set
++# CONFIG_ARTHUR is not set
++
++#
++# Power management options
++#
++CONFIG_PM=y
++# CONFIG_PM_DEBUG is not set
++CONFIG_PM_SLEEP=y
++CONFIG_SUSPEND_NVS=y
++CONFIG_SUSPEND=y
++CONFIG_SUSPEND_FREEZER=y
++# CONFIG_APM_EMULATION is not set
++# CONFIG_PM_RUNTIME is not set
++CONFIG_PM_OPS=y
++CONFIG_ARCH_SUSPEND_POSSIBLE=y
++CONFIG_NET=y
++
++#
++# Networking options
++#
++# CONFIG_PACKET is not set
++# CONFIG_UNIX is not set
++CONFIG_XFRM=y
++# CONFIG_XFRM_USER is not set
++# CONFIG_XFRM_SUB_POLICY is not set
++# CONFIG_XFRM_MIGRATE is not set
++# CONFIG_XFRM_STATISTICS is not set
++# CONFIG_NET_KEY is not set
++CONFIG_INET=y
++# CONFIG_IP_MULTICAST is not set
++# CONFIG_IP_ADVANCED_ROUTER is not set
++CONFIG_IP_FIB_HASH=y
++# CONFIG_IP_PNP is not set
++# CONFIG_NET_IPIP is not set
++# CONFIG_NET_IPGRE is not set
++# CONFIG_ARPD is not set
++# CONFIG_SYN_COOKIES is not set
++# CONFIG_INET_AH is not set
++# CONFIG_INET_ESP is not set
++# CONFIG_INET_IPCOMP is not set
++# CONFIG_INET_XFRM_TUNNEL is not set
++CONFIG_INET_TUNNEL=m
++CONFIG_INET_XFRM_MODE_TRANSPORT=y
++CONFIG_INET_XFRM_MODE_TUNNEL=y
++CONFIG_INET_XFRM_MODE_BEET=y
++# CONFIG_INET_LRO is not set
++CONFIG_INET_DIAG=y
++CONFIG_INET_TCP_DIAG=y
++# CONFIG_TCP_CONG_ADVANCED is not set
++CONFIG_TCP_CONG_CUBIC=y
++CONFIG_DEFAULT_TCP_CONG="cubic"
++# CONFIG_TCP_MD5SIG is not set
++CONFIG_IPV6=m
++# CONFIG_IPV6_PRIVACY is not set
++# CONFIG_IPV6_ROUTER_PREF is not set
++# CONFIG_IPV6_OPTIMISTIC_DAD is not set
++# CONFIG_INET6_AH is not set
++# CONFIG_INET6_ESP is not set
++# CONFIG_INET6_IPCOMP is not set
++# CONFIG_IPV6_MIP6 is not set
++# CONFIG_INET6_XFRM_TUNNEL is not set
++# CONFIG_INET6_TUNNEL is not set
++CONFIG_INET6_XFRM_MODE_TRANSPORT=m
++CONFIG_INET6_XFRM_MODE_TUNNEL=m
++CONFIG_INET6_XFRM_MODE_BEET=m
++# CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION is not set
++CONFIG_IPV6_SIT=m
++# CONFIG_IPV6_SIT_6RD is not set
++CONFIG_IPV6_NDISC_NODETYPE=y
++# CONFIG_IPV6_TUNNEL is not set
++# CONFIG_IPV6_MULTIPLE_TABLES is not set
++# CONFIG_IPV6_MROUTE is not set
++# CONFIG_NETWORK_SECMARK is not set
++# CONFIG_NETFILTER is not set
++# CONFIG_IP_DCCP is not set
++# CONFIG_IP_SCTP is not set
++# CONFIG_RDS is not set
++# CONFIG_TIPC is not set
++# CONFIG_ATM is not set
++# CONFIG_L2TP is not set
++# CONFIG_BRIDGE is not set
++# CONFIG_VLAN_8021Q is not set
++# CONFIG_DECNET is not set
++# CONFIG_LLC2 is not set
++# CONFIG_IPX is not set
++# CONFIG_ATALK is not set
++# CONFIG_X25 is not set
++# CONFIG_LAPB is not set
++# CONFIG_ECONET is not set
++# CONFIG_WAN_ROUTER is not set
++# CONFIG_PHONET is not set
++# CONFIG_IEEE802154 is not set
++# CONFIG_NET_SCHED is not set
++# CONFIG_DCB is not set
++
++#
++# Network testing
++#
++# CONFIG_NET_PKTGEN is not set
++# CONFIG_HAMRADIO is not set
++# CONFIG_CAN is not set
++# CONFIG_IRDA is not set
++# CONFIG_BT is not set
++# CONFIG_AF_RXRPC is not set
++CONFIG_WIRELESS=y
++# CONFIG_CFG80211 is not set
++# CONFIG_LIB80211 is not set
++
++#
++# CFG80211 needs to be enabled for MAC80211
++#
++
++#
++# Some wireless drivers require a rate control algorithm
++#
++# CONFIG_WIMAX is not set
++# CONFIG_RFKILL is not set
++# CONFIG_NET_9P is not set
++# CONFIG_CAIF is not set
++
++#
++# Device Drivers
++#
++
++#
++# Generic Driver Options
++#
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++# CONFIG_DEVTMPFS is not set
++CONFIG_STANDALONE=y
++CONFIG_PREVENT_FIRMWARE_BUILD=y
++CONFIG_FW_LOADER=y
++CONFIG_FIRMWARE_IN_KERNEL=y
++CONFIG_EXTRA_FIRMWARE=""
++# CONFIG_DEBUG_DRIVER is not set
++# CONFIG_DEBUG_DEVRES is not set
++# CONFIG_SYS_HYPERVISOR is not set
++# CONFIG_CONNECTOR is not set
++CONFIG_MTD=y
++# CONFIG_MTD_DEBUG is not set
++# CONFIG_MTD_TESTS is not set
++# CONFIG_MTD_CONCAT is not set
++CONFIG_MTD_PARTITIONS=y
++# CONFIG_MTD_REDBOOT_PARTS is not set
++CONFIG_MTD_CMDLINE_PARTS=y
++# CONFIG_MTD_AFS_PARTS is not set
++# CONFIG_MTD_AR7_PARTS is not set
++
++#
++# User Modules And Translation Layers
++#
++CONFIG_MTD_CHAR=y
++CONFIG_MTD_BLKDEVS=y
++CONFIG_MTD_BLOCK=y
++# CONFIG_FTL is not set
++# CONFIG_NFTL is not set
++# CONFIG_INFTL is not set
++# CONFIG_RFD_FTL is not set
++# CONFIG_SSFDC is not set
++# CONFIG_SM_FTL is not set
++# CONFIG_MTD_OOPS is not set
++
++#
++# RAM/ROM/Flash chip drivers
++#
++# CONFIG_MTD_CFI is not set
++# CONFIG_MTD_JEDECPROBE is not set
++CONFIG_MTD_MAP_BANK_WIDTH_1=y
++CONFIG_MTD_MAP_BANK_WIDTH_2=y
++CONFIG_MTD_MAP_BANK_WIDTH_4=y
++# CONFIG_MTD_MAP_BANK_WIDTH_8 is not set
++# CONFIG_MTD_MAP_BANK_WIDTH_16 is not set
++# CONFIG_MTD_MAP_BANK_WIDTH_32 is not set
++CONFIG_MTD_CFI_I1=y
++CONFIG_MTD_CFI_I2=y
++# CONFIG_MTD_CFI_I4 is not set
++# CONFIG_MTD_CFI_I8 is not set
++# CONFIG_MTD_RAM is not set
++# CONFIG_MTD_ROM is not set
++# CONFIG_MTD_ABSENT is not set
++
++#
++# Mapping drivers for chip access
++#
++# CONFIG_MTD_COMPLEX_MAPPINGS is not set
++# CONFIG_MTD_PLATRAM is not set
++
++#
++# Self-contained MTD device drivers
++#
++# CONFIG_MTD_DATAFLASH is not set
++# CONFIG_MTD_M25P80 is not set
++# CONFIG_MTD_SST25L is not set
++# CONFIG_MTD_SLRAM is not set
++# CONFIG_MTD_PHRAM is not set
++# CONFIG_MTD_MTDRAM is not set
++# CONFIG_MTD_BLOCK2MTD is not set
++
++#
++# Disk-On-Chip Device Drivers
++#
++# CONFIG_MTD_DOC2000 is not set
++# CONFIG_MTD_DOC2001 is not set
++# CONFIG_MTD_DOC2001PLUS is not set
++CONFIG_MTD_NAND_ECC=y
++# CONFIG_MTD_NAND_ECC_SMC is not set
++CONFIG_MTD_NAND=y
++# CONFIG_MTD_NAND_VERIFY_WRITE is not set
++# CONFIG_MTD_SM_COMMON is not set
++# CONFIG_MTD_NAND_MUSEUM_IDS is not set
++CONFIG_MTD_NAND_DENALI_SCRATCH_REG_ADDR=0xFF108018
++# CONFIG_MTD_NAND_GPIO is not set
++CONFIG_MTD_NAND_IDS=y
++# CONFIG_MTD_NAND_DISKONCHIP is not set
++CONFIG_MTD_NAND_ATMEL=y
++# CONFIG_MTD_NAND_ATMEL_ECC_HW is not set
++CONFIG_MTD_NAND_ATMEL_ECC_SOFT=y
++# CONFIG_MTD_NAND_ATMEL_ECC_NONE is not set
++# CONFIG_MTD_NAND_NANDSIM is not set
++# CONFIG_MTD_NAND_PLATFORM is not set
++# CONFIG_MTD_ONENAND is not set
++
++#
++# LPDDR flash memory drivers
++#
++# CONFIG_MTD_LPDDR is not set
++
++#
++# UBI - Unsorted block images
++#
++# CONFIG_MTD_UBI is not set
++# CONFIG_PARPORT is not set
++CONFIG_BLK_DEV=y
++# CONFIG_BLK_DEV_COW_COMMON is not set
++CONFIG_BLK_DEV_LOOP=y
++# CONFIG_BLK_DEV_CRYPTOLOOP is not set
++
++#
++# DRBD disabled because PROC_FS, INET or CONNECTOR not selected
++#
++# CONFIG_BLK_DEV_NBD is not set
++# CONFIG_BLK_DEV_RAM is not set
++# CONFIG_CDROM_PKTCDVD is not set
++# CONFIG_ATA_OVER_ETH is not set
++# CONFIG_MG_DISK is not set
++# CONFIG_MISC_DEVICES is not set
++CONFIG_HAVE_IDE=y
++# CONFIG_IDE is not set
++
++#
++# SCSI device support
++#
++CONFIG_SCSI_MOD=y
++# CONFIG_RAID_ATTRS is not set
++CONFIG_SCSI=y
++CONFIG_SCSI_DMA=y
++# CONFIG_SCSI_TGT is not set
++# CONFIG_SCSI_NETLINK is not set
++CONFIG_SCSI_PROC_FS=y
++
++#
++# SCSI support type (disk, tape, CD-ROM)
++#
++CONFIG_BLK_DEV_SD=y
++# CONFIG_CHR_DEV_ST is not set
++# CONFIG_CHR_DEV_OSST is not set
++# CONFIG_BLK_DEV_SR is not set
++# CONFIG_CHR_DEV_SG is not set
++# CONFIG_CHR_DEV_SCH is not set
++CONFIG_SCSI_MULTI_LUN=y
++# CONFIG_SCSI_CONSTANTS is not set
++# CONFIG_SCSI_LOGGING is not set
++# CONFIG_SCSI_SCAN_ASYNC is not set
++CONFIG_SCSI_WAIT_SCAN=m
++
++#
++# SCSI Transports
++#
++# CONFIG_SCSI_SPI_ATTRS is not set
++# CONFIG_SCSI_FC_ATTRS is not set
++# CONFIG_SCSI_ISCSI_ATTRS is not set
++# CONFIG_SCSI_SAS_LIBSAS is not set
++# CONFIG_SCSI_SRP_ATTRS is not set
++CONFIG_SCSI_LOWLEVEL=y
++# CONFIG_ISCSI_TCP is not set
++# CONFIG_LIBFC is not set
++# CONFIG_LIBFCOE is not set
++# CONFIG_SCSI_DEBUG is not set
++# CONFIG_SCSI_DH is not set
++# CONFIG_SCSI_OSD_INITIATOR is not set
++# CONFIG_ATA is not set
++# CONFIG_MD is not set
++CONFIG_NETDEVICES=y
++# CONFIG_DUMMY is not set
++# CONFIG_BONDING is not set
++# CONFIG_MACVLAN is not set
++# CONFIG_EQUALIZER is not set
++# CONFIG_TUN is not set
++# CONFIG_VETH is not set
++# CONFIG_NET_ETHERNET is not set
++# CONFIG_NETDEV_1000 is not set
++# CONFIG_NETDEV_10000 is not set
++CONFIG_WLAN=y
++# CONFIG_HOSTAP is not set
++
++#
++# Enable WiMAX (Networking options) to see the WiMAX drivers
++#
++# CONFIG_WAN is not set
++# CONFIG_PPP is not set
++# CONFIG_SLIP is not set
++# CONFIG_NETCONSOLE is not set
++# CONFIG_NETPOLL is not set
++# CONFIG_NET_POLL_CONTROLLER is not set
++# CONFIG_ISDN is not set
++# CONFIG_PHONE is not set
++
++#
++# Input device support
++#
++CONFIG_INPUT=y
++# CONFIG_INPUT_FF_MEMLESS is not set
++# CONFIG_INPUT_POLLDEV is not set
++# CONFIG_INPUT_SPARSEKMAP is not set
++
++#
++# Userland interfaces
++#
++CONFIG_INPUT_MOUSEDEV=y
++# CONFIG_INPUT_MOUSEDEV_PSAUX is not set
++CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
++CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
++# CONFIG_INPUT_JOYDEV is not set
++CONFIG_INPUT_EVDEV=y
++# CONFIG_INPUT_EVBUG is not set
++
++#
++# Input Device Drivers
++#
++CONFIG_INPUT_KEYBOARD=y
++# CONFIG_KEYBOARD_ADP5588 is not set
++CONFIG_KEYBOARD_ATKBD=y
++# CONFIG_KEYBOARD_QT2160 is not set
++# CONFIG_KEYBOARD_LKKBD is not set
++CONFIG_KEYBOARD_GPIO=y
++# CONFIG_KEYBOARD_TCA6416 is not set
++# CONFIG_KEYBOARD_MATRIX is not set
++# CONFIG_KEYBOARD_MAX7359 is not set
++# CONFIG_KEYBOARD_NEWTON is not set
++# CONFIG_KEYBOARD_OPENCORES is not set
++# CONFIG_KEYBOARD_STOWAWAY is not set
++# CONFIG_KEYBOARD_SUNKBD is not set
++# CONFIG_KEYBOARD_XTKBD is not set
++# CONFIG_INPUT_MOUSE is not set
++# CONFIG_INPUT_JOYSTICK is not set
++# CONFIG_INPUT_TABLET is not set
++# CONFIG_INPUT_TOUCHSCREEN is not set
++# CONFIG_INPUT_MISC is not set
++
++#
++# Hardware I/O ports
++#
++CONFIG_SERIO=y
++# CONFIG_SERIO_SERPORT is not set
++CONFIG_SERIO_LIBPS2=y
++# CONFIG_SERIO_RAW is not set
++# CONFIG_SERIO_ALTERA_PS2 is not set
++# CONFIG_GAMEPORT is not set
++
++#
++# Character devices
++#
++CONFIG_VT=y
++CONFIG_CONSOLE_TRANSLATIONS=y
++CONFIG_VT_CONSOLE=y
++CONFIG_HW_CONSOLE=y
++# CONFIG_VT_HW_CONSOLE_BINDING is not set
++CONFIG_DEVKMEM=y
++# CONFIG_SERIAL_NONSTANDARD is not set
++# CONFIG_N_GSM is not set
++
++#
++# Serial drivers
++#
++# CONFIG_SERIAL_8250 is not set
++
++#
++# Non-8250 serial port support
++#
++CONFIG_SERIAL_ATMEL=y
++CONFIG_SERIAL_ATMEL_CONSOLE=y
++CONFIG_SERIAL_ATMEL_PDC=y
++# CONFIG_SERIAL_ATMEL_TTYAT is not set
++# CONFIG_SERIAL_MAX3100 is not set
++CONFIG_SERIAL_CORE=y
++CONFIG_SERIAL_CORE_CONSOLE=y
++# CONFIG_SERIAL_TIMBERDALE is not set
++# CONFIG_SERIAL_ALTERA_JTAGUART is not set
++# CONFIG_SERIAL_ALTERA_UART is not set
++CONFIG_UNIX98_PTYS=y
++# CONFIG_DEVPTS_MULTIPLE_INSTANCES is not set
++CONFIG_LEGACY_PTYS=y
++CONFIG_LEGACY_PTY_COUNT=256
++# CONFIG_IPMI_HANDLER is not set
++CONFIG_HW_RANDOM=y
++# CONFIG_HW_RANDOM_TIMERIOMEM is not set
++# CONFIG_R3964 is not set
++# CONFIG_RAW_DRIVER is not set
++# CONFIG_TCG_TPM is not set
++# CONFIG_RAMOOPS is not set
++CONFIG_I2C=y
++CONFIG_I2C_BOARDINFO=y
++CONFIG_I2C_COMPAT=y
++# CONFIG_I2C_CHARDEV is not set
++CONFIG_I2C_HELPER_AUTO=y
++CONFIG_I2C_ALGOBIT=y
++
++#
++# I2C Hardware Bus support
++#
++
++#
++# I2C system bus drivers (mostly embedded / system-on-chip)
++#
++# CONFIG_I2C_DESIGNWARE is not set
++CONFIG_I2C_GPIO=y
++# CONFIG_I2C_OCORES is not set
++# CONFIG_I2C_PCA_PLATFORM is not set
++# CONFIG_I2C_SIMTEC is not set
++# CONFIG_I2C_XILINX is not set
++
++#
++# External I2C/SMBus adapter drivers
++#
++# CONFIG_I2C_PARPORT_LIGHT is not set
++# CONFIG_I2C_TAOS_EVM is not set
++
++#
++# Other I2C/SMBus bus drivers
++#
++# CONFIG_I2C_STUB is not set
++CONFIG_I2C_DEBUG_CORE=y
++CONFIG_I2C_DEBUG_ALGO=y
++CONFIG_I2C_DEBUG_BUS=y
++CONFIG_SPI=y
++# CONFIG_SPI_DEBUG is not set
++CONFIG_SPI_MASTER=y
++
++#
++# SPI Master Controller Drivers
++#
++CONFIG_SPI_ATMEL=y
++# CONFIG_SPI_BITBANG is not set
++# CONFIG_SPI_GPIO is not set
++# CONFIG_SPI_XILINX is not set
++# CONFIG_SPI_DESIGNWARE is not set
++
++#
++# SPI Protocol Masters
++#
++# CONFIG_SPI_SPIDEV is not set
++# CONFIG_SPI_TLE62X0 is not set
++
++#
++# PPS support
++#
++# CONFIG_PPS is not set
++CONFIG_ARCH_REQUIRE_GPIOLIB=y
++CONFIG_GPIOLIB=y
++# CONFIG_DEBUG_GPIO is not set
++# CONFIG_GPIO_SYSFS is not set
++
++#
++# Memory mapped GPIO expanders:
++#
++# CONFIG_GPIO_IT8761E is not set
++
++#
++# I2C GPIO expanders:
++#
++# CONFIG_GPIO_MAX7300 is not set
++# CONFIG_GPIO_MAX732X is not set
++# CONFIG_GPIO_PCA953X is not set
++# CONFIG_GPIO_PCF857X is not set
++# CONFIG_GPIO_ADP5588 is not set
++
++#
++# PCI GPIO expanders:
++#
++
++#
++# SPI GPIO expanders:
++#
++# CONFIG_GPIO_MAX7301 is not set
++# CONFIG_GPIO_MCP23S08 is not set
++# CONFIG_GPIO_MC33880 is not set
++
++#
++# AC97 GPIO expanders:
++#
++
++#
++# MODULbus GPIO expanders:
++#
++# CONFIG_W1 is not set
++# CONFIG_POWER_SUPPLY is not set
++# CONFIG_HWMON is not set
++# CONFIG_THERMAL is not set
++# CONFIG_WATCHDOG is not set
++CONFIG_SSB_POSSIBLE=y
++
++#
++# Sonics Silicon Backplane
++#
++# CONFIG_SSB is not set
++CONFIG_MFD_SUPPORT=y
++# CONFIG_MFD_CORE is not set
++# CONFIG_MFD_88PM860X is not set
++# CONFIG_MFD_SM501 is not set
++# CONFIG_MFD_ASIC3 is not set
++# CONFIG_HTC_EGPIO is not set
++# CONFIG_HTC_PASIC3 is not set
++# CONFIG_HTC_I2CPLD is not set
++# CONFIG_TPS65010 is not set
++# CONFIG_TPS6507X is not set
++# CONFIG_TWL4030_CORE is not set
++# CONFIG_MFD_TC35892 is not set
++# CONFIG_MFD_TMIO is not set
++# CONFIG_MFD_T7L66XB is not set
++# CONFIG_MFD_TC6387XB is not set
++# CONFIG_MFD_TC6393XB is not set
++# CONFIG_PMIC_DA903X is not set
++# CONFIG_PMIC_ADP5520 is not set
++# CONFIG_MFD_MAX8925 is not set
++# CONFIG_MFD_WM8400 is not set
++# CONFIG_MFD_WM831X is not set
++# CONFIG_MFD_WM8350_I2C is not set
++# CONFIG_MFD_WM8994 is not set
++# CONFIG_MFD_PCF50633 is not set
++# CONFIG_MFD_MC13783 is not set
++# CONFIG_ABX500_CORE is not set
++# CONFIG_EZX_PCAP is not set
++# CONFIG_AB8500_CORE is not set
++# CONFIG_REGULATOR is not set
++# CONFIG_MEDIA_SUPPORT is not set
++
++#
++# Graphics support
++#
++# CONFIG_VGASTATE is not set
++# CONFIG_VIDEO_OUTPUT_CONTROL is not set
++# CONFIG_FB is not set
++# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
++
++#
++# Display device support
++#
++# CONFIG_DISPLAY_SUPPORT is not set
++
++#
++# Console display driver support
++#
++# CONFIG_VGA_CONSOLE is not set
++CONFIG_DUMMY_CONSOLE=y
++# CONFIG_SOUND is not set
++# CONFIG_HID_SUPPORT is not set
++CONFIG_USB_SUPPORT=y
++CONFIG_USB_ARCH_HAS_HCD=y
++CONFIG_USB_ARCH_HAS_OHCI=y
++# CONFIG_USB_ARCH_HAS_EHCI is not set
++# CONFIG_USB is not set
++# CONFIG_USB_MUSB_HDRC is not set
++# CONFIG_USB_GADGET_MUSB_HDRC is not set
++
++#
++# NOTE: USB_STORAGE depends on SCSI but BLK_DEV_SD may
++#
++CONFIG_USB_GADGET=y
++# CONFIG_USB_GADGET_DEBUG is not set
++# CONFIG_USB_GADGET_DEBUG_FILES is not set
++# CONFIG_USB_GADGET_DEBUG_FS is not set
++CONFIG_USB_GADGET_VBUS_DRAW=2
++CONFIG_USB_GADGET_SELECTED=y
++CONFIG_USB_GADGET_AT91=y
++CONFIG_USB_AT91=y
++# CONFIG_USB_GADGET_ATMEL_USBA is not set
++# CONFIG_USB_GADGET_FSL_USB2 is not set
++# CONFIG_USB_GADGET_LH7A40X is not set
++# CONFIG_USB_GADGET_OMAP is not set
++# CONFIG_USB_GADGET_PXA25X is not set
++# CONFIG_USB_GADGET_R8A66597 is not set
++# CONFIG_USB_GADGET_PXA27X is not set
++# CONFIG_USB_GADGET_S3C_HSOTG is not set
++# CONFIG_USB_GADGET_IMX is not set
++# CONFIG_USB_GADGET_S3C2410 is not set
++# CONFIG_USB_GADGET_M66592 is not set
++# CONFIG_USB_GADGET_AMD5536UDC is not set
++# CONFIG_USB_GADGET_FSL_QE is not set
++# CONFIG_USB_GADGET_CI13XXX is not set
++# CONFIG_USB_GADGET_NET2280 is not set
++# CONFIG_USB_GADGET_GOKU is not set
++# CONFIG_USB_GADGET_LANGWELL is not set
++# CONFIG_USB_GADGET_DUMMY_HCD is not set
++# CONFIG_USB_GADGET_DUALSPEED is not set
++# CONFIG_USB_ZERO is not set
++# CONFIG_USB_AUDIO is not set
++CONFIG_USB_ETH=y
++CONFIG_USB_ETH_RNDIS=y
++# CONFIG_USB_ETH_EEM is not set
++# CONFIG_USB_GADGETFS is not set
++# CONFIG_USB_FUNCTIONFS is not set
++# CONFIG_USB_FILE_STORAGE is not set
++# CONFIG_USB_MASS_STORAGE is not set
++# CONFIG_USB_G_SERIAL is not set
++# CONFIG_USB_MIDI_GADGET is not set
++# CONFIG_USB_G_PRINTER is not set
++# CONFIG_USB_CDC_COMPOSITE is not set
++# CONFIG_USB_G_NOKIA is not set
++# CONFIG_USB_G_MULTI is not set
++# CONFIG_USB_G_HID is not set
++# CONFIG_USB_G_WEBCAM is not set
++
++#
++# OTG and related infrastructure
++#
++# CONFIG_USB_GPIO_VBUS is not set
++# CONFIG_USB_ULPI is not set
++# CONFIG_NOP_USB_XCEIV is not set
++CONFIG_MMC=y
++# CONFIG_MMC_DEBUG is not set
++# CONFIG_MMC_UNSAFE_RESUME is not set
++
++#
++# MMC/SD/SDIO Card Drivers
++#
++CONFIG_MMC_BLOCK=y
++CONFIG_MMC_BLOCK_BOUNCE=y
++# CONFIG_SDIO_UART is not set
++# CONFIG_MMC_TEST is not set
++
++#
++# MMC/SD/SDIO Host Controller Drivers
++#
++# CONFIG_MMC_SDHCI is not set
++# CONFIG_MMC_AT91 is not set
++# CONFIG_MMC_ATMELMCI is not set
++CONFIG_MMC_SPI=y
++# CONFIG_MEMSTICK is not set
++# CONFIG_NEW_LEDS is not set
++# CONFIG_ACCESSIBILITY is not set
++CONFIG_RTC_LIB=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_HCTOSYS=y
++CONFIG_RTC_HCTOSYS_DEVICE="rtc0"
++CONFIG_RTC_DEBUG=y
++
++#
++# RTC interfaces
++#
++CONFIG_RTC_INTF_SYSFS=y
++CONFIG_RTC_INTF_PROC=y
++CONFIG_RTC_INTF_DEV=y
++# CONFIG_RTC_INTF_DEV_UIE_EMUL is not set
++# CONFIG_RTC_DRV_TEST is not set
++
++#
++# I2C RTC drivers
++#
++# CONFIG_RTC_DRV_DS1307 is not set
++# CONFIG_RTC_DRV_DS1374 is not set
++# CONFIG_RTC_DRV_DS1672 is not set
++# CONFIG_RTC_DRV_MAX6900 is not set
++# CONFIG_RTC_DRV_RS5C372 is not set
++# CONFIG_RTC_DRV_ISL1208 is not set
++# CONFIG_RTC_DRV_X1205 is not set
++# CONFIG_RTC_DRV_PCF8563 is not set
++# CONFIG_RTC_DRV_PCF8583 is not set
++# CONFIG_RTC_DRV_M41T80 is not set
++# CONFIG_RTC_DRV_BQ32K is not set
++# CONFIG_RTC_DRV_S35390A is not set
++# CONFIG_RTC_DRV_FM3130 is not set
++# CONFIG_RTC_DRV_RX8581 is not set
++# CONFIG_RTC_DRV_RX8025 is not set
++CONFIG_RTC_DRV_RV3029C2=y
++
++#
++# SPI RTC drivers
++#
++# CONFIG_RTC_DRV_M41T94 is not set
++# CONFIG_RTC_DRV_DS1305 is not set
++# CONFIG_RTC_DRV_DS1390 is not set
++# CONFIG_RTC_DRV_MAX6902 is not set
++# CONFIG_RTC_DRV_R9701 is not set
++# CONFIG_RTC_DRV_RS5C348 is not set
++# CONFIG_RTC_DRV_DS3234 is not set
++# CONFIG_RTC_DRV_PCF2123 is not set
++
++#
++# Platform RTC drivers
++#
++# CONFIG_RTC_DRV_CMOS is not set
++# CONFIG_RTC_DRV_DS1286 is not set
++# CONFIG_RTC_DRV_DS1511 is not set
++# CONFIG_RTC_DRV_DS1553 is not set
++# CONFIG_RTC_DRV_DS1742 is not set
++# CONFIG_RTC_DRV_STK17TA8 is not set
++# CONFIG_RTC_DRV_M48T86 is not set
++# CONFIG_RTC_DRV_M48T35 is not set
++# CONFIG_RTC_DRV_M48T59 is not set
++# CONFIG_RTC_DRV_MSM6242 is not set
++# CONFIG_RTC_DRV_BQ4802 is not set
++# CONFIG_RTC_DRV_RP5C01 is not set
++# CONFIG_RTC_DRV_V3020 is not set
++
++#
++# on-CPU RTC drivers
++#
++# CONFIG_RTC_DRV_AT91SAM9 is not set
++# CONFIG_DMADEVICES is not set
++# CONFIG_AUXDISPLAY is not set
++# CONFIG_UIO is not set
++# CONFIG_STAGING is not set
++
++#
++# File systems
++#
++CONFIG_EXT2_FS=y
++# CONFIG_EXT2_FS_XATTR is not set
++# CONFIG_EXT2_FS_XIP is not set
++# CONFIG_EXT3_FS is not set
++# CONFIG_EXT4_FS is not set
++# CONFIG_REISERFS_FS is not set
++# CONFIG_JFS_FS is not set
++# CONFIG_FS_POSIX_ACL is not set
++# CONFIG_XFS_FS is not set
++# CONFIG_GFS2_FS is not set
++# CONFIG_OCFS2_FS is not set
++# CONFIG_BTRFS_FS is not set
++# CONFIG_NILFS2_FS is not set
++CONFIG_FILE_LOCKING=y
++CONFIG_FSNOTIFY=y
++CONFIG_DNOTIFY=y
++CONFIG_INOTIFY=y
++CONFIG_INOTIFY_USER=y
++# CONFIG_QUOTA is not set
++# CONFIG_AUTOFS_FS is not set
++# CONFIG_AUTOFS4_FS is not set
++CONFIG_FUSE_FS=m
++# CONFIG_CUSE is not set
++
++#
++# Caches
++#
++# CONFIG_FSCACHE is not set
++
++#
++# CD-ROM/DVD Filesystems
++#
++# CONFIG_ISO9660_FS is not set
++# CONFIG_UDF_FS is not set
++
++#
++# DOS/FAT/NT Filesystems
++#
++CONFIG_FAT_FS=y
++# CONFIG_MSDOS_FS is not set
++CONFIG_VFAT_FS=y
++CONFIG_FAT_DEFAULT_CODEPAGE=437
++CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
++# CONFIG_NTFS_FS is not set
++
++#
++# Pseudo filesystems
++#
++CONFIG_PROC_FS=y
++CONFIG_PROC_SYSCTL=y
++CONFIG_PROC_PAGE_MONITOR=y
++CONFIG_SYSFS=y
++CONFIG_TMPFS=y
++# CONFIG_TMPFS_POSIX_ACL is not set
++# CONFIG_HUGETLB_PAGE is not set
++# CONFIG_CONFIGFS_FS is not set
++CONFIG_MISC_FILESYSTEMS=y
++# CONFIG_ADFS_FS is not set
++# CONFIG_AFFS_FS is not set
++# CONFIG_HFS_FS is not set
++# CONFIG_HFSPLUS_FS is not set
++# CONFIG_BEFS_FS is not set
++# CONFIG_BFS_FS is not set
++# CONFIG_EFS_FS is not set
++CONFIG_JFFS2_FS=y
++CONFIG_JFFS2_FS_DEBUG=0
++CONFIG_JFFS2_FS_WRITEBUFFER=y
++# CONFIG_JFFS2_FS_WBUF_VERIFY is not set
++# CONFIG_JFFS2_SUMMARY is not set
++# CONFIG_JFFS2_FS_XATTR is not set
++# CONFIG_JFFS2_COMPRESSION_OPTIONS is not set
++CONFIG_JFFS2_ZLIB=y
++# CONFIG_JFFS2_LZO is not set
++CONFIG_JFFS2_RTIME=y
++# CONFIG_JFFS2_RUBIN is not set
++# CONFIG_LOGFS is not set
++# CONFIG_CRAMFS is not set
++# CONFIG_SQUASHFS is not set
++# CONFIG_VXFS_FS is not set
++# CONFIG_MINIX_FS is not set
++# CONFIG_OMFS_FS is not set
++# CONFIG_HPFS_FS is not set
++# CONFIG_QNX4FS_FS is not set
++# CONFIG_ROMFS_FS is not set
++# CONFIG_SYSV_FS is not set
++# CONFIG_UFS_FS is not set
++CONFIG_NETWORK_FILESYSTEMS=y
++# CONFIG_NFS_FS is not set
++# CONFIG_NFSD is not set
++# CONFIG_SMB_FS is not set
++# CONFIG_CEPH_FS is not set
++# CONFIG_CIFS is not set
++# CONFIG_NCP_FS is not set
++# CONFIG_CODA_FS is not set
++# CONFIG_AFS_FS is not set
++
++#
++# Partition Types
++#
++# CONFIG_PARTITION_ADVANCED is not set
++CONFIG_MSDOS_PARTITION=y
++CONFIG_NLS=y
++CONFIG_NLS_DEFAULT="iso8859-1"
++CONFIG_NLS_CODEPAGE_437=y
++# CONFIG_NLS_CODEPAGE_737 is not set
++# CONFIG_NLS_CODEPAGE_775 is not set
++CONFIG_NLS_CODEPAGE_850=y
++# CONFIG_NLS_CODEPAGE_852 is not set
++# CONFIG_NLS_CODEPAGE_855 is not set
++# CONFIG_NLS_CODEPAGE_857 is not set
++# CONFIG_NLS_CODEPAGE_860 is not set
++# CONFIG_NLS_CODEPAGE_861 is not set
++# CONFIG_NLS_CODEPAGE_862 is not set
++# CONFIG_NLS_CODEPAGE_863 is not set
++# CONFIG_NLS_CODEPAGE_864 is not set
++# CONFIG_NLS_CODEPAGE_865 is not set
++# CONFIG_NLS_CODEPAGE_866 is not set
++# CONFIG_NLS_CODEPAGE_869 is not set
++# CONFIG_NLS_CODEPAGE_936 is not set
++# CONFIG_NLS_CODEPAGE_950 is not set
++# CONFIG_NLS_CODEPAGE_932 is not set
++# CONFIG_NLS_CODEPAGE_949 is not set
++# CONFIG_NLS_CODEPAGE_874 is not set
++# CONFIG_NLS_ISO8859_8 is not set
++# CONFIG_NLS_CODEPAGE_1250 is not set
++# CONFIG_NLS_CODEPAGE_1251 is not set
++# CONFIG_NLS_ASCII is not set
++CONFIG_NLS_ISO8859_1=y
++# CONFIG_NLS_ISO8859_2 is not set
++# CONFIG_NLS_ISO8859_3 is not set
++# CONFIG_NLS_ISO8859_4 is not set
++# CONFIG_NLS_ISO8859_5 is not set
++# CONFIG_NLS_ISO8859_6 is not set
++# CONFIG_NLS_ISO8859_7 is not set
++# CONFIG_NLS_ISO8859_9 is not set
++# CONFIG_NLS_ISO8859_13 is not set
++# CONFIG_NLS_ISO8859_14 is not set
++# CONFIG_NLS_ISO8859_15 is not set
++# CONFIG_NLS_KOI8_R is not set
++# CONFIG_NLS_KOI8_U is not set
++# CONFIG_NLS_UTF8 is not set
++# CONFIG_DLM is not set
++
++#
++# Kernel hacking
++#
++# CONFIG_PRINTK_TIME is not set
++CONFIG_ENABLE_WARN_DEPRECATED=y
++CONFIG_ENABLE_MUST_CHECK=y
++CONFIG_FRAME_WARN=1024
++# CONFIG_MAGIC_SYSRQ is not set
++# CONFIG_STRIP_ASM_SYMS is not set
++# CONFIG_UNUSED_SYMBOLS is not set
++CONFIG_DEBUG_FS=y
++# CONFIG_HEADERS_CHECK is not set
++CONFIG_DEBUG_KERNEL=y
++# CONFIG_DEBUG_SHIRQ is not set
++CONFIG_DETECT_SOFTLOCKUP=y
++# CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC is not set
++CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC_VALUE=0
++CONFIG_DETECT_HUNG_TASK=y
++# CONFIG_BOOTPARAM_HUNG_TASK_PANIC is not set
++CONFIG_BOOTPARAM_HUNG_TASK_PANIC_VALUE=0
++CONFIG_SCHED_DEBUG=y
++# CONFIG_SCHEDSTATS is not set
++# CONFIG_TIMER_STATS is not set
++# CONFIG_DEBUG_OBJECTS is not set
++# CONFIG_DEBUG_SLAB is not set
++# CONFIG_DEBUG_KMEMLEAK is not set
++# CONFIG_DEBUG_RT_MUTEXES is not set
++# CONFIG_RT_MUTEX_TESTER is not set
++# CONFIG_DEBUG_SPINLOCK is not set
++# CONFIG_DEBUG_MUTEXES is not set
++# CONFIG_DEBUG_LOCK_ALLOC is not set
++# CONFIG_PROVE_LOCKING is not set
++# CONFIG_LOCK_STAT is not set
++# CONFIG_DEBUG_SPINLOCK_SLEEP is not set
++# CONFIG_DEBUG_LOCKING_API_SELFTESTS is not set
++# CONFIG_DEBUG_KOBJECT is not set
++CONFIG_DEBUG_BUGVERBOSE=y
++# CONFIG_DEBUG_INFO is not set
++# CONFIG_DEBUG_VM is not set
++# CONFIG_DEBUG_WRITECOUNT is not set
++CONFIG_DEBUG_MEMORY_INIT=y
++# CONFIG_DEBUG_LIST is not set
++# CONFIG_DEBUG_SG is not set
++# CONFIG_DEBUG_NOTIFIERS is not set
++# CONFIG_DEBUG_CREDENTIALS is not set
++CONFIG_FRAME_POINTER=y
++# CONFIG_BOOT_PRINTK_DELAY is not set
++# CONFIG_RCU_TORTURE_TEST is not set
++# CONFIG_RCU_CPU_STALL_DETECTOR is not set
++# CONFIG_BACKTRACE_SELF_TEST is not set
++# CONFIG_DEBUG_BLOCK_EXT_DEVT is not set
++# CONFIG_DEBUG_FORCE_WEAK_PER_CPU is not set
++# CONFIG_LKDTM is not set
++# CONFIG_FAULT_INJECTION is not set
++# CONFIG_LATENCYTOP is not set
++# CONFIG_SYSCTL_SYSCALL_CHECK is not set
++# CONFIG_PAGE_POISONING is not set
++CONFIG_HAVE_FUNCTION_TRACER=y
++CONFIG_TRACING_SUPPORT=y
++CONFIG_FTRACE=y
++# CONFIG_FUNCTION_TRACER is not set
++# CONFIG_IRQSOFF_TRACER is not set
++# CONFIG_SCHED_TRACER is not set
++# CONFIG_ENABLE_DEFAULT_TRACERS is not set
++# CONFIG_BOOT_TRACER is not set
++CONFIG_BRANCH_PROFILE_NONE=y
++# CONFIG_PROFILE_ANNOTATED_BRANCHES is not set
++# CONFIG_PROFILE_ALL_BRANCHES is not set
++# CONFIG_STACK_TRACER is not set
++# CONFIG_KMEMTRACE is not set
++# CONFIG_WORKQUEUE_TRACER is not set
++# CONFIG_BLK_DEV_IO_TRACE is not set
++# CONFIG_DYNAMIC_DEBUG is not set
++# CONFIG_ATOMIC64_SELFTEST is not set
++# CONFIG_SAMPLES is not set
++CONFIG_HAVE_ARCH_KGDB=y
++# CONFIG_KGDB is not set
++CONFIG_DEBUG_USER=y
++# CONFIG_DEBUG_ERRORS is not set
++# CONFIG_DEBUG_STACK_USAGE is not set
++CONFIG_DEBUG_LL=y
++# CONFIG_EARLY_PRINTK is not set
++# CONFIG_DEBUG_ICEDCC is not set
++# CONFIG_OC_ETM is not set
++
++#
++# Security options
++#
++# CONFIG_KEYS is not set
++# CONFIG_SECURITY is not set
++# CONFIG_SECURITYFS is not set
++# CONFIG_DEFAULT_SECURITY_SELINUX is not set
++# CONFIG_DEFAULT_SECURITY_SMACK is not set
++# CONFIG_DEFAULT_SECURITY_TOMOYO is not set
++CONFIG_DEFAULT_SECURITY_DAC=y
++CONFIG_DEFAULT_SECURITY=""
++CONFIG_CRYPTO=y
++
++#
++# Crypto core or helper
++#
++# CONFIG_CRYPTO_MANAGER is not set
++# CONFIG_CRYPTO_MANAGER2 is not set
++# CONFIG_CRYPTO_GF128MUL is not set
++# CONFIG_CRYPTO_NULL is not set
++# CONFIG_CRYPTO_CRYPTD is not set
++# CONFIG_CRYPTO_AUTHENC is not set
++# CONFIG_CRYPTO_TEST is not set
++
++#
++# Authenticated Encryption with Associated Data
++#
++# CONFIG_CRYPTO_CCM is not set
++# CONFIG_CRYPTO_GCM is not set
++# CONFIG_CRYPTO_SEQIV is not set
++
++#
++# Block modes
++#
++# CONFIG_CRYPTO_CBC is not set
++# CONFIG_CRYPTO_CTR is not set
++# CONFIG_CRYPTO_CTS is not set
++# CONFIG_CRYPTO_ECB is not set
++# CONFIG_CRYPTO_LRW is not set
++# CONFIG_CRYPTO_PCBC is not set
++# CONFIG_CRYPTO_XTS is not set
++
++#
++# Hash modes
++#
++# CONFIG_CRYPTO_HMAC is not set
++# CONFIG_CRYPTO_XCBC is not set
++# CONFIG_CRYPTO_VMAC is not set
++
++#
++# Digest
++#
++# CONFIG_CRYPTO_CRC32C is not set
++# CONFIG_CRYPTO_GHASH is not set
++# CONFIG_CRYPTO_MD4 is not set
++# CONFIG_CRYPTO_MD5 is not set
++# CONFIG_CRYPTO_MICHAEL_MIC is not set
++# CONFIG_CRYPTO_RMD128 is not set
++# CONFIG_CRYPTO_RMD160 is not set
++# CONFIG_CRYPTO_RMD256 is not set
++# CONFIG_CRYPTO_RMD320 is not set
++# CONFIG_CRYPTO_SHA1 is not set
++# CONFIG_CRYPTO_SHA256 is not set
++# CONFIG_CRYPTO_SHA512 is not set
++# CONFIG_CRYPTO_TGR192 is not set
++# CONFIG_CRYPTO_WP512 is not set
++
++#
++# Ciphers
++#
++# CONFIG_CRYPTO_AES is not set
++# CONFIG_CRYPTO_ANUBIS is not set
++# CONFIG_CRYPTO_ARC4 is not set
++# CONFIG_CRYPTO_BLOWFISH is not set
++# CONFIG_CRYPTO_CAMELLIA is not set
++# CONFIG_CRYPTO_CAST5 is not set
++# CONFIG_CRYPTO_CAST6 is not set
++# CONFIG_CRYPTO_DES is not set
++# CONFIG_CRYPTO_FCRYPT is not set
++# CONFIG_CRYPTO_KHAZAD is not set
++# CONFIG_CRYPTO_SALSA20 is not set
++# CONFIG_CRYPTO_SEED is not set
++# CONFIG_CRYPTO_SERPENT is not set
++# CONFIG_CRYPTO_TEA is not set
++# CONFIG_CRYPTO_TWOFISH is not set
++
++#
++# Compression
++#
++# CONFIG_CRYPTO_DEFLATE is not set
++# CONFIG_CRYPTO_ZLIB is not set
++# CONFIG_CRYPTO_LZO is not set
++
++#
++# Random Number Generation
++#
++# CONFIG_CRYPTO_ANSI_CPRNG is not set
++CONFIG_CRYPTO_HW=y
++# CONFIG_BINARY_PRINTF is not set
++
++#
++# Library routines
++#
++CONFIG_BITREVERSE=y
++CONFIG_GENERIC_FIND_LAST_BIT=y
++# CONFIG_CRC_CCITT is not set
++# CONFIG_CRC16 is not set
++# CONFIG_CRC_T10DIF is not set
++CONFIG_CRC_ITU_T=y
++CONFIG_CRC32=y
++CONFIG_CRC7=y
++# CONFIG_LIBCRC32C is not set
++CONFIG_ZLIB_INFLATE=y
++CONFIG_ZLIB_DEFLATE=y
++CONFIG_HAS_IOMEM=y
++CONFIG_HAS_IOPORT=y
++CONFIG_HAS_DMA=y
++CONFIG_NLATTR=y
++CONFIG_GENERIC_ATOMIC64=y
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 939bccd..75590f5 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -364,6 +364,12 @@ config MACH_STAMP9G20
+ 	  evaluation board.
+ 	  <http://www.taskit.de/en/>
+ 
++config MACH_TNY_A9G20
++	bool "CALAO TNY-A9G20-LPW"
++	help
++	  Select this if you are using a Calao Systems TNY-A9G20-LPW.
++	  <http://www.calao-systems.com>
++
+ endif
+ 
+ if (ARCH_AT91SAM9260 || ARCH_AT91SAM9G20)
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index ca2ac00..86bb7bc 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -65,6 +65,7 @@ obj-$(CONFIG_MACH_AT91SAM9G20EK_2MMC) += board-sam9g20ek-2slot-mmc.o
+ obj-$(CONFIG_MACH_CPU9G20)	+= board-cpu9krea.o
+ obj-$(CONFIG_MACH_STAMP9G20)	+= board-stamp9g20.o
+ obj-$(CONFIG_MACH_PORTUXG20)	+= board-stamp9g20.o
++obj-$(CONFIG_MACH_TNY_A9G20) 	+= board-tny-a9g20-lpw.o
+ 
+ # AT91SAM9260/AT91SAM9G20 board-specific support
+ obj-$(CONFIG_MACH_SNAPPER_9260)	+= board-snapper9260.o
+diff --git a/arch/arm/mach-at91/board-tny-a9g20-lpw.c b/arch/arm/mach-at91/board-tny-a9g20-lpw.c
+new file mode 100644
+index 0000000..6b585f2
+--- /dev/null
++++ b/arch/arm/mach-at91/board-tny-a9g20-lpw.c
+@@ -0,0 +1,301 @@
++/*
++ * linux/arch/arm/mach-at91/board-tny-a9g20-lpw.c
++ *  Copyright (C) 2005 SAN People
++ *  Copyright (C) 2008 Atmel
++ *  Copyright (C) 2009 Calao-systems
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#include <linux/types.h>
++#include <linux/init.h>
++#include <linux/mm.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/eeprom.h>
++#include <linux/input.h>
++#include <linux/spi/at73c213.h>
++#include <linux/clk.h>
++#include <linux/gpio_keys.h>
++#include <linux/spi/mmc_spi.h>
++
++#include <mach/hardware.h>
++#include <asm/setup.h>
++#include <asm/mach-types.h>
++#include <asm/irq.h>
++
++#include <asm/mach/arch.h>
++#include <asm/mach/map.h>
++#include <asm/mach/irq.h>
++
++#include <mach/board.h>
++#include <mach/gpio.h>
++#include <mach/at91_shdwc.h>
++#include <mach/at91sam9_smc.h>
++
++#include "sam9_smc.h"
++#include "generic.h"
++
++
++static void __init ek_map_io(void)
++{
++	/* Initialize processor: 12.000 MHz crystal */
++	at91sam9260_initialize(12000000);
++
++	/* DGBU on ttyS0. (Rx & Tx only) */
++	at91_register_uart(0, 0, 0);
++
++	/* USART0 on ttyS1. (Rx, Tx, CTS, RTS) */
++	at91_register_uart(AT91SAM9260_ID_US0, 1, ATMEL_UART_CTS |
++				 ATMEL_UART_RTS);
++
++	/* USART1 on ttyS2. (Rx, Tx, CTS, RTS) */
++	at91_register_uart(AT91SAM9260_ID_US1, 2, ATMEL_UART_CTS | 
++				ATMEL_UART_RTS);
++
++	/* USART2 on ttyS3. (Rx, Tx, CTS, RTS) */
++	at91_register_uart(AT91SAM9260_ID_US2, 3, 0);
++
++	/* set serial console to ttyS0 (ie, DBGU) */
++	at91_set_serial_console(0);
++}
++
++static void __init ek_init_irq(void)
++{
++	at91sam9260_init_interrupts(NULL);
++}
++
++
++/*
++ * USB Host port
++ */
++static struct at91_usbh_data __initdata ek_usbh_data = {
++	.ports		= 2,
++};
++
++/*
++ * USB Device port
++ */
++static struct at91_udc_data __initdata ek_udc_data = {
++	.vbus_pin	= AT91_PIN_PC5,
++	.pullup_pin	= 0,		/* pull-up driven by UDC */
++};
++
++
++/*
++ * MACB Ethernet device
++ */
++static struct at91_eth_data __initdata ek_macb_data = {
++	.phy_irq_pin	= AT91_PIN_PA31,
++	.is_rmii	= 1,
++};
++
++
++#if defined(CONFIG_MMC_SPI) || defined(CONFIG_MMC_SPI_MODULE)
++#define MMC_SPI_CARD_DETECT_INT AT91_PIN_PC4
++
++static int at91_mmc_spi_init(struct device *dev,
++	irqreturn_t (*detect_int)(int, void *), void *data)
++{
++	/* Configure Interrupt pin as input, no pull-up */
++	at91_set_gpio_input(MMC_SPI_CARD_DETECT_INT, 0);
++	return request_irq(gpio_to_irq(MMC_SPI_CARD_DETECT_INT), detect_int,
++		0, "mmc-spi-detect", data);
++}
++
++static void at91_mmc_spi_exit(struct device *dev, void *data)
++{
++	free_irq(gpio_to_irq(MMC_SPI_CARD_DETECT_INT), data);
++}
++
++static struct mmc_spi_platform_data at91_mmc_spi_pdata = {
++	.init = at91_mmc_spi_init,
++	.exit = at91_mmc_spi_exit,
++	.detect_delay = 100, /* msecs */
++};
++#endif
++
++/*
++ * SPI devices.
++ */
++
++static struct spi_board_info ek_spi_devices[] = {
++#if defined(CONFIG_MMC_SPI) || defined(CONFIG_MMC_SPI_MODULE)
++        {
++                .modalias = "mmc_spi",
++                .max_speed_hz = 20000000,     /* max spi clock (SCK) speed in HZ */
++                .bus_num = 1,
++                .chip_select = 3,
++                .platform_data = &at91_mmc_spi_pdata,
++//              .controller_data = &mmc_spi_chip_info,
++                .mode = SPI_MODE_3,
++        },
++#endif
++};
++
++/*
++ * NAND flash
++ */
++static struct mtd_partition __initdata ek_nand_partition[] = {
++	{
++		.name	= "Uboot & Kernel",
++		.offset	= 0,
++		.size	= SZ_16M,
++	},
++	{
++		.name	= "Root FS",
++		.offset	= MTDPART_OFS_NXTBLK,
++		.size	= 120 * SZ_1M,
++	},
++	{
++		.name	= "FS",
++		.offset	= MTDPART_OFS_NXTBLK,
++		.size	= MTDPART_SIZ_FULL,
++	}
++};
++
++static struct mtd_partition * __init nand_partitions(int size, int *num_partitions)
++{
++	*num_partitions = ARRAY_SIZE(ek_nand_partition);
++	return ek_nand_partition;
++}
++/*
++ * LEDs
++ */
++static struct gpio_led ek_leds[] = {
++	{	/* USER LED */
++		.name			= "USERLED",
++		.gpio			= AT91_PIN_PA4,
++		.active_low		= 1,
++		.default_trigger	= "none",
++	},
++};
++
++static struct i2c_board_info __initdata ek_i2c_devices[] = {
++	{
++		I2C_BOARD_INFO("rv3029c2", 0x56),
++	},
++};
++
++/* det_pin is not connected */
++static struct atmel_nand_data __initdata ek_nand_data = {
++	.ale		= 21,
++	.cle		= 22,
++	.rdy_pin	= AT91_PIN_PC13,
++	.enable_pin	= AT91_PIN_PC14,
++	.partition_info	= nand_partitions,
++	.bus_width_16	= 0,
++};
++
++static struct sam9_smc_config __initdata ek_nand_smc_config = {
++	.ncs_read_setup		= 0,
++	.nrd_setup		= 1,
++	.ncs_write_setup	= 0,
++	.nwe_setup		= 1,
++
++	.ncs_read_pulse		= 3,
++	.nrd_pulse		= 3,
++	.ncs_write_pulse	= 3,
++	.nwe_pulse		= 3,
++
++	.read_cycle		= 5,
++	.write_cycle		= 5,
++
++	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE | AT91_SMC_EXNWMODE_DISABLE,
++	.tdf_cycles		= 2,
++};
++
++static void __init ek_add_device_nand(void)
++{
++	ek_nand_smc_config.mode |= AT91_SMC_DBW_8;
++
++	/* configure chip-select 3 (NAND) */
++	sam9_smc_configure(3, &ek_nand_smc_config);
++
++	at91_add_device_nand(&ek_nand_data);
++}
++
++#if defined(CONFIG_KEYBOARD_GPIO) || defined(CONFIG_KEYBOARD_GPIO_MODULE)
++static struct gpio_keys_button ek_buttons[] = {
++	{
++		.gpio		= AT91_PIN_PA25,
++		.code		= BTN_3,
++		.desc		= "TEST",
++		.active_low	= 1,
++		.wakeup		= 1,
++	},
++};
++
++static struct gpio_keys_platform_data ek_button_data = {
++	.buttons	= ek_buttons,
++	.nbuttons	= ARRAY_SIZE(ek_buttons),
++};
++
++static struct platform_device ek_button_device = {
++	.name		= "gpio-keys",
++	.id		= -1,
++	.num_resources	= 0,
++	.dev		= {
++		.platform_data	= &ek_button_data,
++	}
++};
++
++static void __init ek_add_device_buttons(void)
++{
++	at91_set_gpio_input(AT91_PIN_PA25, 1);	/* btn3 */
++	at91_set_deglitch(AT91_PIN_PA25, 1);
++
++	platform_device_register(&ek_button_device);
++}
++#else
++static void __init ek_add_device_buttons(void) {}
++#endif
++
++static void __init ek_board_init(void)
++{
++	/* Serial */
++	at91_add_device_serial();
++	/* USB Host */
++	at91_add_device_usbh(&ek_usbh_data);
++	/* USB Device */
++	at91_add_device_udc(&ek_udc_data);
++	/* SPI */
++	at91_add_device_spi(ek_spi_devices, ARRAY_SIZE(ek_spi_devices));
++	/* NAND */
++	ek_add_device_nand();
++	/* Ethernet */
++	at91_add_device_eth(&ek_macb_data);
++	/* I2C */
++	at91_add_device_i2c(ek_i2c_devices, ARRAY_SIZE(ek_i2c_devices));
++	/* LEDs */
++	at91_gpio_leds(ek_leds, ARRAY_SIZE(ek_leds));
++	/* Push Buttons */
++	ek_add_device_buttons();
++	/* shutdown controller, wakeup button (5 msec low) */
++	at91_sys_write(AT91_SHDW_MR, AT91_SHDW_CPTWK0_(10) | AT91_SHDW_WKMODE0_LOW
++				| AT91_SHDW_RTTWKEN);
++}
++
++MACHINE_START(TNY_A9G20, "CALAO TNY_A9G20")
++	/* Maintainer: Atmel */
++	.phys_io	= AT91_BASE_SYS,
++	.io_pg_offst	= (AT91_VA_BASE_SYS >> 18) & 0xfffc,
++	.boot_params	= AT91_SDRAM_BASE + 0x100,
++	.timer		= &at91sam926x_timer,
++	.map_io		= ek_map_io,
++	.init_irq	= ek_init_irq,
++	.init_machine	= ek_board_init,
++MACHINE_END
+diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
+index 48ca713..916be3f 100644
+--- a/drivers/rtc/Kconfig
++++ b/drivers/rtc/Kconfig
+@@ -343,6 +343,15 @@ config RTC_DRV_RX8025
+ 	  This driver can also be built as a module. If so, the module
+ 	  will be called rtc-rx8025.
+ 
++config RTC_DRV_RV3029C2
++	tristate "Micro-crytal RTC"
++	help
++	  If you say yes here you get support for the Micro-crystal
++	  RV3029-C2 RTC chips.
++
++	  This driver can also be built as a module. If so, the module
++	  will be called rtc-rv3029c2.
++
+ endif # I2C
+ 
+ comment "SPI RTC drivers"
+diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
+index 0f207b3..dde2544 100644
+--- a/drivers/rtc/Makefile
++++ b/drivers/rtc/Makefile
+@@ -80,6 +80,7 @@ obj-$(CONFIG_RTC_DRV_RP5C01)	+= rtc-rp5c01.o
+ obj-$(CONFIG_RTC_DRV_RS5C313)	+= rtc-rs5c313.o
+ obj-$(CONFIG_RTC_DRV_RS5C348)	+= rtc-rs5c348.o
+ obj-$(CONFIG_RTC_DRV_RS5C372)	+= rtc-rs5c372.o
++obj-$(CONFIG_RTC_DRV_RV3029C2)	+= rtc-rv3029c2.o
+ obj-$(CONFIG_RTC_DRV_RX8025)	+= rtc-rx8025.o
+ obj-$(CONFIG_RTC_DRV_RX8581)	+= rtc-rx8581.o
+ obj-$(CONFIG_RTC_DRV_S35390A)	+= rtc-s35390a.o
+diff --git a/drivers/rtc/rtc-rv3029c2.c b/drivers/rtc/rtc-rv3029c2.c
+new file mode 100644
+index 0000000..886b4bb
+--- /dev/null
++++ b/drivers/rtc/rtc-rv3029c2.c
+@@ -0,0 +1,653 @@
++/*
++ * Mcrystal RV-3029C2 rtc class driver
++ *
++ * Author: Grégory Hermant <gregory.hermant@calao-systems.com>
++ *
++ * based on previously existing rtc class drivers
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * NOTE: Currently this driver only supports the bare minimum for read
++ * and write the RTC. The extra features provided by this chip
++ * (alarms, trickle charger, eeprom, T° compensation) are unavailable.
++ */
++
++#include <linux/module.h>
++#include <linux/i2c.h>
++#include <linux/bcd.h>
++#include <linux/rtc.h>
++#include <linux/delay.h>
++
++#define DRV_VERSION "0.2"
++
++/* Register map */
++/* control section */
++#define RV3029C2_ONOFF_CTRL			0x00
++#define RV3029C2_ONOFF_CTRL_WE			(1 << 0)
++#define RV3029C2_IRQ_CTRL			0x01
++#define RV3029C2_IRQ_FLAGS			0x02
++#define RV3029C2_STATUS				0x03
++#define RV3029C2_STATUS_VLOW1			(1 << 2)
++#define RV3029C2_STATUS_VLOW2			(1 << 3)
++#define RV3029C2_STATUS_SR			(1 << 4)
++#define RV3029C2_STATUS_EEBUSY			(1 << 7)
++#define RV3029C2_RST_CTRL			0x04
++#define RV3029C2_CONTROL_SECTION_LEN		0x05
++
++/* watch section */
++#define RV3029C2_W_SECONDS			0x08
++#define RV3029C2_W_MINUTES			0x09
++#define RV3029C2_W_HOURS			0x0A
++#define RV3029C2_REG_HR_12_24     		(1<<6)	/* 24h/12h mode */
++#define RV3029C2_REG_HR_PM      		(1<<5)	/* PM/AM bit in 12h mode */
++#define RV3029C2_W_DATE				0x0B
++#define RV3029C2_W_DAYS				0x0C
++#define RV3029C2_W_MONTHS			0x0D
++#define RV3029C2_W_YEARS			0x0E
++#define RV3029C2_WATCH_SECTION_LEN		0x07
++
++/* alarm section */
++#define RV3029C2_A_SC				0x10
++#define RV3029C2_A_MN				0x11
++#define RV3029C2_A_HR				0x12
++#define RV3029C2_A_DT				0x13
++#define RV3029C2_A_DW				0x14
++#define RV3029C2_A_MO				0x15
++#define RV3029C2_A_YR				0x16
++#define RV3029C2_ALARM_SECTION_LEN		0x07
++
++/* timer section */
++#define RV3029C2_TIMER_LOW			0x18
++#define RV3029C2_TIMER_HIGH			0x19
++
++/* temperature section */
++#define RV3029C2_TEMP_PAGE			0x20
++
++/* eeprom data section */
++#define RV3029C2_E2P_EEDATA1			0x28
++#define RV3029C2_E2P_EEDATA2			0x29
++
++/* eeprom control section */
++#define RV3029C2_CONTROL_E2P_EECTRL		0x30
++#define RV3029C2_TRICKLE_1K			(1<<0)	/*  1K resistance */
++#define RV3029C2_TRICKLE_5K			(1<<1)	/*  5K resistance */
++#define RV3029C2_TRICKLE_20K			(1<<2)	/* 20K resistance */
++#define RV3029C2_TRICKLE_80K			(1<<3)	/* 80K resistance */
++#define RV3029C2_CONTROL_E2P_XTALOFFSET		0x31
++#define RV3029C2_CONTROL_E2P_QCOEF		0x32
++#define RV3029C2_CONTROL_E2P_TURNOVER		0x33
++
++/* user ram section */
++#define RV3029C2_USR1_RAM_PAGE			0x38
++#define RV3029C2_USR1_SECTION_LEN		0x04
++#define RV3029C2_USR2_RAM_PAGE			0x3C
++#define RV3029C2_USR2_SECTION_LEN		0x04
++
++#define TRICKLE_DISABLED			0x00
++
++static struct i2c_driver rv3029c2_driver;
++
++static int rv3029c2_i2c_read_regs(struct i2c_client *client, u8 reg, u8 *buf,
++				  unsigned len)
++{
++	u8 reg_addr[1] = { reg } ;
++	struct i2c_msg msgs[2] = {
++		{client->addr, 0, sizeof(reg_addr), reg_addr}
++		,
++		{client->addr, I2C_M_RD, len, buf}
++	};
++	int ret;
++
++	BUG_ON(reg > RV3029C2_USR1_RAM_PAGE + 7);
++	BUG_ON(reg + len > RV3029C2_USR1_RAM_PAGE + 8);
++
++	ret = i2c_transfer(client->adapter, msgs, 2);
++	if (ret > 0)
++		ret = 0;
++	return ret;
++}
++
++static int 
++rv3029c2_i2c_write_regs(struct i2c_client *client, u8 reg, u8 const buf[],
++			unsigned len)
++{
++	u8 i2c_buf[8];
++	struct i2c_msg msgs[1] = {
++		{client->addr, 0, len + 1, i2c_buf}
++	};
++	int ret;
++
++	BUG_ON(reg > RV3029C2_USR1_RAM_PAGE + 7);
++	BUG_ON(reg + len > RV3029C2_USR1_RAM_PAGE + 8);
++
++	i2c_buf[0] = reg ;	
++	memcpy(&i2c_buf[1], &buf[0], len);
++
++	ret = i2c_transfer(client->adapter, msgs, 1);
++	if (ret > 0)
++		ret = 0;
++	return ret;
++}
++
++/* simple check to see if we have a rv3029c2 */
++static int
++rv3029c2_i2c_validate_client(struct i2c_client *client)
++{
++	u8 regs[RV3029C2_WATCH_SECTION_LEN] = { 0, };
++	u8 zero_mask[RV3029C2_WATCH_SECTION_LEN] = {
++		0x80, 0x80, 0x80, 0xc0, 0xf8, 0xe0, 0x80
++	};
++	int i;
++	int ret;
++
++	ret = rv3029c2_i2c_read_regs(client, RV3029C2_W_SECONDS, regs, 
++			 	     RV3029C2_WATCH_SECTION_LEN);
++	if (ret < 0)
++		return ret;
++
++	for (i = 0; i < RV3029C2_WATCH_SECTION_LEN; ++i) {
++		if (regs[i] & zero_mask[i])	/* check if bits are cleared */
++			return -ENODEV;
++	}
++
++	return 0;
++}
++
++static int
++rv3029c2_i2c_get_sr(struct i2c_client *client)
++{
++	u8 buf[1] = { 0, };
++	int sr = rv3029c2_i2c_read_regs(client, RV3029C2_STATUS, buf, 1);
++	printk(KERN_INFO "status = 0x%.2x (%d)\n", buf[0], buf[0]);
++	if (sr < 0)
++		return -EIO;
++	return sr;
++}
++
++static int
++rv3029c2_reset_eerefon(struct i2c_client *client)
++{
++	u8 buf[1] = { 0, };
++	int ret;
++
++	ret = rv3029c2_i2c_read_regs(client, RV3029C2_ONOFF_CTRL, buf, 1);
++	if (ret < 0)
++		return ret;
++	buf[0] = buf[0] & 0xF7;	/* clear the EERefON bit */
++ 	
++	ret=rv3029c2_i2c_write_regs(client, RV3029C2_ONOFF_CTRL, buf, 1);
++	if (ret < 0)
++		return ret;
++	return 0;
++}
++
++static int
++rv3029c2_set_eerefon(struct i2c_client *client)
++{
++	u8 buf[1] = { 0, };
++	int ret;
++
++	ret = rv3029c2_i2c_read_regs(client, RV3029C2_ONOFF_CTRL, buf, 1);
++	if (ret < 0)
++		return ret;
++
++	buf[0] = buf[0] | 0x08;	/* set the EERefON bit */
++
++	ret = rv3029c2_i2c_write_regs(client, RV3029C2_ONOFF_CTRL, buf, 1);
++	if (ret < 0)
++		return ret;
++	return 0;
++		
++}
++
++static int
++rv3029c2_reset_we(struct i2c_client *client)
++{
++	u8 buf[1] = { 0, };
++	int ret;
++
++	ret = rv3029c2_i2c_read_regs(client, RV3029C2_ONOFF_CTRL, buf, 1);
++	if (ret < 0)
++		return ret;
++
++	buf[0] = buf[0] & 0xFE;	/* clear WE bit */
++ 	
++	ret = rv3029c2_i2c_write_regs(client, RV3029C2_ONOFF_CTRL, buf, 1);
++	if (ret < 0)
++		return ret;
++	return 0;
++}
++
++static int
++rv3029c2_set_we(struct i2c_client *client)
++{
++	u8 buf[1] = { 0, };
++	int ret;
++
++	ret = rv3029c2_i2c_read_regs(client, RV3029C2_ONOFF_CTRL, buf, 1);
++	if (ret < 0)
++		return ret;
++
++	buf[0] = buf[0] | 0x01;	/* set WE bit */
++
++	ret = rv3029c2_i2c_write_regs(client, RV3029C2_ONOFF_CTRL, buf, 1);
++	if (ret < 0)
++		return ret;
++	return 0;
++		
++}
++
++static int
++rv3029c2_get_rtrickle(struct i2c_client *client)
++{
++
++	u8 buf[1] = { 0, };
++	int ret;
++	
++	/* EEPROM refresh disabled */
++	ret=rv3029c2_reset_eerefon(client);
++	if (ret < 0)
++		return ret;
++
++	ret = rv3029c2_i2c_read_regs(client, RV3029C2_CONTROL_E2P_EECTRL,
++				     buf, 1);
++	if (ret < 0)
++		return ret;
++
++	/* EEPROM refresh enabled */
++	ret=rv3029c2_set_eerefon(client);
++	if (ret < 0)
++		return ret;
++	
++	buf[0] = ((buf[0] & 0xF0) >> 4) ;	/* shift to the right the 4 MSB bits */
++	return buf[0];
++
++}
++
++static int
++rv3029c2_set_rtrickle(struct i2c_client *client, u8 rt)
++{
++	u8 buf[1] = { 0, };
++	int ret;
++
++	/* EEPROM refresh disabled */
++	ret=rv3029c2_reset_eerefon(client);
++	if (ret < 0)
++		return ret;
++
++	ret = rv3029c2_i2c_read_regs(client, RV3029C2_CONTROL_E2P_EECTRL, buf, 1);
++	if (ret < 0)
++		return ret;
++	
++	buf[0] = (buf[0] & 0x0f) | rt; 	/* init the trickle value */
++
++	ret = rv3029c2_i2c_write_regs(client, RV3029C2_CONTROL_E2P_EECTRL, buf, 1);
++	if (ret < 0)
++	    return ret;
++
++	mdelay(100);	/* wait until eebusy = 1 */
++	return ret;	
++}
++
++static int
++rv3029c2_i2c_get_usr1(struct i2c_client *client)
++{
++	u8 buf[RV3029C2_USR1_SECTION_LEN] = { 0, };
++	int ret;
++
++	ret = rv3029c2_i2c_read_regs(client, RV3029C2_USR1_RAM_PAGE, buf,
++				    RV3029C2_USR1_SECTION_LEN);
++	if (ret < 0)
++		return ret;
++
++	return 	(buf[3] << 24) | (buf[2] << 16) | (buf[1] << 8) | buf[0] ;
++}
++
++static int
++rv3029c2_i2c_set_usr1(struct i2c_client *client, int usr)
++{
++	u8 buf[RV3029C2_USR1_SECTION_LEN];
++
++	buf[0] = usr & 0xff;
++	buf[1] = (usr >> 8)  & 0xff;
++	buf[2] = (usr >> 16) & 0xff; 
++	buf[3] = (usr >> 24) & 0xff;
++
++	return rv3029c2_i2c_write_regs(client, RV3029C2_USR1_RAM_PAGE, buf,
++				       RV3029C2_USR1_SECTION_LEN);
++				    
++}
++
++static int 
++rv3029c2_i2c_read_time(struct i2c_client *client, struct rtc_time *tm)
++{
++	int sr;
++	u8 regs[RV3029C2_WATCH_SECTION_LEN] = { 0, };
++
++	sr = rv3029c2_i2c_get_sr(client);
++	if (sr < 0) {
++		dev_err(&client->dev, "%s: reading SR failed\n", __func__);
++		return -EIO;
++	}
++
++	sr = rv3029c2_i2c_read_regs(client, RV3029C2_W_SECONDS ,regs, 
++				    RV3029C2_WATCH_SECTION_LEN);
++	if (sr < 0) {
++		dev_err(&client->dev, "%s: reading RTC section failed\n",
++			__func__);
++		return sr;
++	}
++
++	tm->tm_sec = bcd2bin(regs[RV3029C2_W_SECONDS-RV3029C2_W_SECONDS]);
++	tm->tm_min = bcd2bin(regs[RV3029C2_W_MINUTES-RV3029C2_W_SECONDS]);
++
++	/* HR field has a more complex interpretation */
++	{
++		const u8 _hr = regs[RV3029C2_W_HOURS-RV3029C2_W_SECONDS];
++		if (!(_hr & RV3029C2_REG_HR_12_24))	/* 24h format */
++			tm->tm_hour = bcd2bin(_hr & 0x3f);
++		else {
++			/* 12h format */
++			tm->tm_hour = bcd2bin(_hr & 0x1f);
++			if (_hr & RV3029C2_REG_HR_PM)	/* PM flag set */
++				tm->tm_hour += 12;
++		}
++	}
++
++	tm->tm_mday = bcd2bin(regs[RV3029C2_W_DATE-RV3029C2_W_SECONDS]);
++	tm->tm_mon = bcd2bin(regs[RV3029C2_W_MONTHS-RV3029C2_W_SECONDS])-1 ;
++	tm->tm_year = bcd2bin(regs[RV3029C2_W_YEARS-RV3029C2_W_SECONDS])+100;
++	tm->tm_wday = bcd2bin(regs[RV3029C2_W_DAYS-RV3029C2_W_SECONDS])-1;
++
++	return 0;
++}
++
++static int rv3029c2_rtc_read_time(struct device *dev, struct rtc_time *tm)
++{
++	return rv3029c2_i2c_read_time(to_i2c_client(dev), tm);
++}
++
++static int 
++rv3029c2_i2c_read_alarm(struct i2c_client *client, struct rtc_wkalrm *alarm)
++{
++	struct rtc_time *const tm = &alarm->time;
++	int sr;
++	u8 regs[8];
++
++	sr = rv3029c2_i2c_get_sr(client);
++	if (sr < 0) {
++		dev_err(&client->dev, "%s: reading SR failed\n", __func__);
++		return -EIO;
++	}
++
++	sr = rv3029c2_i2c_read_regs(client, RV3029C2_A_SC, regs, 
++				    RV3029C2_ALARM_SECTION_LEN);
++	
++	if (sr < 0) {
++		dev_err(&client->dev, "%s: reading alarm section failed\n",
++			__func__);
++		return sr;
++	}
++
++	tm->tm_sec = bcd2bin(regs[RV3029C2_A_SC-RV3029C2_A_SC] & 0x7f);
++	tm->tm_min = bcd2bin(regs[RV3029C2_A_MN-RV3029C2_A_SC] & 0x7f);
++	tm->tm_hour = bcd2bin(regs[RV3029C2_A_HR-RV3029C2_A_SC] & 0x3f);		
++	tm->tm_mday = bcd2bin(regs[RV3029C2_A_DT-RV3029C2_A_SC] & 0x3f);
++	tm->tm_mon = bcd2bin(regs[RV3029C2_A_MO-RV3029C2_A_SC] & 0x1f) -1;
++	tm->tm_year = bcd2bin(regs[RV3029C2_A_YR-RV3029C2_A_SC] & 0x7f) + 100;
++	tm->tm_wday = bcd2bin(regs[RV3029C2_A_DW-RV3029C2_A_SC] & 0x07) - 1; 
++
++	return 0;
++}
++
++static int rv3029c2_rtc_read_alarm(struct device *dev, struct rtc_wkalrm *alarm)
++{
++	return rv3029c2_i2c_read_alarm(to_i2c_client(dev), alarm);
++}
++
++static int
++rv3029c2_i2c_set_time(struct i2c_client *client, struct rtc_time const *tm)
++{
++	u8 regs[8];
++	int sr, ret;
++
++	/* The clock has an 8 bit wide bcd-coded register (they never learn)
++	 * for the year. tm_year is an offset from 1900 and we are interested
++	 * in the 2000-2099 range, so any value less than 100 is invalid.
++	 */
++	if (tm->tm_year < 100)
++		return -EINVAL;
++
++	regs[RV3029C2_W_SECONDS-RV3029C2_W_SECONDS] = bin2bcd(tm->tm_sec);
++	regs[RV3029C2_W_MINUTES-RV3029C2_W_SECONDS] = bin2bcd(tm->tm_min);
++	/* Select 24-hours mode clear 12-24 bit*/
++	regs[RV3029C2_W_HOURS-RV3029C2_W_SECONDS] = (bin2bcd(tm->tm_hour) & ~(RV3029C2_REG_HR_12_24));
++	regs[RV3029C2_W_DATE-RV3029C2_W_SECONDS] = bin2bcd(tm->tm_mday);
++	regs[RV3029C2_W_MONTHS-RV3029C2_W_SECONDS] = bin2bcd(tm->tm_mon+1);
++	regs[RV3029C2_W_DAYS-RV3029C2_W_SECONDS] = bin2bcd((tm->tm_wday & 7)+1);
++	regs[RV3029C2_W_YEARS-RV3029C2_W_SECONDS] = bin2bcd(tm->tm_year - 100);
++
++	sr = rv3029c2_i2c_get_sr(client);
++	if (sr < 0) {
++		dev_err(&client->dev, "%s: reading SR failed\n", __func__);
++		return sr;
++	}
++
++	/* clear WE bit */
++	ret = rv3029c2_reset_we(client);
++	
++	if (ret < 0)
++		return ret;
++
++	sr = rv3029c2_i2c_write_regs(client, RV3029C2_W_SECONDS, regs, 
++				     RV3029C2_WATCH_SECTION_LEN);
++	if (sr < 0)
++		return sr;
++
++	/* set WE bit */
++	ret = rv3029c2_set_we(client);
++	
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
++static int rv3029c2_rtc_set_time(struct device *dev, struct rtc_time *tm)
++{
++	return rv3029c2_i2c_set_time(to_i2c_client(dev), tm);
++}
++
++static const struct rtc_class_ops rv3029c2_rtc_ops = {
++	.read_time    = rv3029c2_rtc_read_time,
++	.set_time     = rv3029c2_rtc_set_time,
++	.read_alarm   = rv3029c2_rtc_read_alarm, 
++        /*.set_alarm    = rv3029c2_rtc_set_alarm, */ 
++};
++
++/* sysfs filesystem */
++
++static ssize_t
++rv3029c2_sysfs_show_trickle(struct device *dev,
++			 struct device_attribute *attr, char *buf)
++{
++	int rtrickle = rv3029c2_get_rtrickle(to_i2c_client(dev));
++	char		*status = "";
++
++	if (rtrickle < 0)
++		return rtrickle;
++
++	if (rtrickle)
++		status = "enabled";	
++	else
++		status = "disabled";	
++	
++	return sprintf(buf, "trickle value=0x%02x (trickle charger %s)\n", 
++		       rtrickle, status);
++}
++
++static ssize_t
++rv3029c2_sysfs_store_trickle(struct device *dev,
++			 struct device_attribute *attr, const char *buf, size_t count)
++{
++	int rtrickle;
++
++	if (buf[0] == '0' && (buf[1] == 'x' || buf[1] == 'X')) {
++		if (sscanf(buf, "%x", &rtrickle) != 1)
++		return -EINVAL;
++	} else {
++		if (sscanf(buf, "%d", &rtrickle) != 1)
++		return -EINVAL;
++	}
++	
++	if (rtrickle < 0 || rtrickle > 0x0f)
++		return -EINVAL;
++
++	rtrickle = rtrickle << 4;	
++
++	return rv3029c2_set_rtrickle(to_i2c_client(dev), rtrickle) ? -EIO : count;
++
++}
++
++static DEVICE_ATTR(trickle, S_IWUSR | S_IRUGO, rv3029c2_sysfs_show_trickle, 
++		   rv3029c2_sysfs_store_trickle);
++
++static ssize_t
++rv3029c2_sysfs_show_usr(struct device *dev,
++		       struct device_attribute *attr, char *buf)
++{
++	int usr = rv3029c2_i2c_get_usr1(to_i2c_client(dev));
++	if (usr < 0)
++		return usr;
++
++	return sprintf(buf, "0x%.4x\n", usr);
++}
++
++static ssize_t
++rv3029c2_sysfs_store_usr(struct device *dev,
++			struct device_attribute *attr,
++			const char *buf, size_t count)
++{
++	int usr = -1;
++
++	if (buf[0] == '0' && (buf[1] == 'x' || buf[1] == 'X')) {
++		if (sscanf(buf, "%x", &usr) != 1)
++			return -EINVAL;
++	} else {
++		if (sscanf(buf, "%d", &usr) != 1)
++			return -EINVAL;
++	}
++
++	if (usr < 0 || usr > 0xffff)
++		return -EINVAL;
++
++	return rv3029c2_i2c_set_usr1(to_i2c_client(dev), usr) ? -EIO : count;
++}
++
++static DEVICE_ATTR(usr, S_IRUGO | S_IWUSR, rv3029c2_sysfs_show_usr,
++		   rv3029c2_sysfs_store_usr);
++
++static int rv3029c2_sysfs_register(struct device *dev)
++{
++	int err;
++
++	err = device_create_file(dev, &dev_attr_trickle);
++	if (err)
++		return err;
++
++	err = device_create_file(dev, &dev_attr_usr);
++	if (err) {
++		device_remove_file(dev, &dev_attr_trickle);
++		return err;
++	}	
++	return 0;
++}
++
++static int
++rv3029c2_probe(struct i2c_client *client, const struct i2c_device_id *id)
++{
++	struct rtc_device *rtc;
++	int rc = 0;
++
++	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
++		return -ENODEV;
++
++	if (rv3029c2_i2c_validate_client(client) < 0)
++		return -ENODEV;
++
++	dev_info(&client->dev,
++		 "chip found, driver version " DRV_VERSION "\n");
++
++	rtc = rtc_device_register(rv3029c2_driver.driver.name,
++				  &client->dev, &rv3029c2_rtc_ops,
++				  THIS_MODULE);
++
++	if (IS_ERR(rtc))
++		return PTR_ERR(rtc);
++
++	i2c_set_clientdata(client, rtc);
++
++	rc = rv3029c2_i2c_get_sr(client);
++	if (rc < 0) {
++		dev_err(&client->dev, "reading status failed\n");
++		goto exit_unregister;
++	}
++	
++	rc = rv3029c2_sysfs_register(&client->dev);
++	if (rc)
++		goto exit_unregister;
++
++	return 0;
++
++exit_unregister:
++	rtc_device_unregister(rtc);
++
++	return rc;
++}
++
++static int rv3029c2_remove(struct i2c_client *client)
++{
++	struct rtc_device *rtc = i2c_get_clientdata(client);
++
++	if (rtc)
++		rtc_device_unregister(rtc);
++
++	return 0;
++}
++
++static struct i2c_device_id rv3029c2_id[] = {
++	{ "rv3029c2", 0 },
++	{ }
++};
++MODULE_DEVICE_TABLE(i2c, rv3029c2_id);
++
++static struct i2c_driver rv3029c2_driver = {
++	.driver = {
++		   .name = "rtc-rv3029c2",
++		   },
++	.probe = rv3029c2_probe,
++	.remove = rv3029c2_remove,
++	.id_table = rv3029c2_id,
++};
++
++static int __init 
++rv3029c2_init(void)
++{
++	return i2c_add_driver(&rv3029c2_driver);
++}
++
++static void __exit 
++rv3029c2_exit(void)
++{
++	i2c_del_driver(&rv3029c2_driver);
++}
++
++MODULE_AUTHOR("Gregory Hermant <gregory.hermant@calao-systems.com>");
++MODULE_DESCRIPTION("Micro crystal RV3029C2 RTC driver");
++MODULE_LICENSE("GPL");
++MODULE_VERSION(DRV_VERSION);
++
++module_init(rv3029c2_init);
++module_exit(rv3029c2_exit);

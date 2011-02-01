@@ -1,0 +1,6 @@
+config BR2_PACKAGE_BLUEZ_LIBS
+	bool "bluez-libs"
+	help
+	  bluez library.
+
+	  http://bluez.sf.net/download/

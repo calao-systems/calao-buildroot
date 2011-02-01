@@ -1,0 +1,4 @@
+ifneq ($(findstring y,$(BR2_mips)$(BR2_mipsel)),)
+BR2_BOARD_PATH:=target/device/mips
+BOARD_PATH:=target/device/mips
+endif

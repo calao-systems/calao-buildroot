@@ -1,0 +1,29 @@
+#############################################################
+#
+# bluez-utils
+#
+#############################################################
+
+
+BLUEZ_UTILS_VERSION = 3.36
+BLUEZ_UTILS_SOURCE:=bluez-utils-$(BLUEZ_LIBS_VERSION).tar.gz
+BLUEZ_UTILS_SITE = http://bluez.sf.net/download/
+BLUEZ_UTILS_INSTALL_STAGING = YES
+BLUEZ_UTILS_INSTALL_TARGET = YES
+
+ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
+BLUEZ_UTILS_DEPENDENCIES += alsa-lib
+BLUEZ_UTILS_CONF_OPT += --with-alsa
+else
+BLUEZ_UTILS_CONF_OPT += --without-alsa
+endif
+
+ifeq ($(BR2_PACKAGE_LIBUSB),y)
+BLUEZ_UTILS_DEPENDENCIES += libusb
+BLUEZ_UTILS_CONF_OPT += --with-usb
+else
+BLUEZ_UTILS_CONF_OPT += --disable-usb
+endif
+
+
+$(eval $(call AUTOTARGETS,package,bluez-utils))
