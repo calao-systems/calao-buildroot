@@ -1,0 +1,8 @@
+config BR2_PACKAGE_EIBD
+	bool "eibd"
+	select BR2_PACKAGE_LIBPTHSEM
+	help
+	  The eibd daemon is a central component of the BCU SDK.
+	  It provides an interface to the EIB / KNX bus.
+
+	  http://www.auto.tuwien.ac.at/~mkoegler/eib/

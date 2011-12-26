@@ -1,0 +1,20 @@
+--- linknx-0.0.1.27/src/ioport.cpp	2009-03-23 01:01:30.000000000 +0100
++++ linknx-0.0.1.27-modified/src/ioport.cpp	2010-11-16 10:25:00.000000000 +0100
+@@ -18,6 +18,7 @@
+ */
+ 
+ #include <iostream>
++#include <strings.h>
+ #include "ioport.h"
+ 
+ Logger& IOPort::logger_m(Logger::getInstance("IOPort"));
+@@ -242,7 +243,8 @@
+     sockfd_m = socket(AF_INET, SOCK_DGRAM, 0);
+     if (sockfd_m >= 0 && rxport_m > 0) {
+         struct sockaddr_in addr;
+-        bzero(&addr,sizeof(addr));
++//      bzero(&addr,sizeof(addr));
++	memset(&addr,0,sizeof(addr));
+         addr.sin_family = AF_INET;
+         addr.sin_port = htons(rxport_m);
+         addr.sin_addr.s_addr = htonl(INADDR_ANY);

@@ -82,6 +82,12 @@ config BR2_TARGET_SBC35_A9G20
 	help
 	  Calao-Systems SBC35-A9G20 board
 
+config BR2_TARGET_HABA_KNX_EXPLORER
+	bool "Board support for the HABA-KNX-EXPLORER"
+	depends on BR2_TARGET_CALAO
+	help
+	  Calao-Systems HABA-KNX-EXPLORER
+
 endchoice
 
 if BR2_TARGET_USB_A9260
@@ -178,6 +184,14 @@ if BR2_TARGET_SBC35_A9G20
 config BR2_BOARD_NAME
 	string
 	default "sbc35-a9g20"
+
+endif
+
+if BR2_TARGET_HABA_KNX_EXPLORER
+
+config BR2_BOARD_NAME
+	string
+	default "haba-knx-explorer"
 
 endif
 

@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LINKNX
+	bool "linknx"
+	select BR2_PACKAGE_LIBPTHSEM
+	help
+	  Linknx is only one component of a bigger project.The goal is to get
+	  the maximum comfort and flexibility from a KNX domotic system while
+	  keeping the smallest possible resource consumption.
+
+	  http://belnet.dl.sourceforge.net/sourceforge/linknx/
